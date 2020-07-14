@@ -1,8 +1,10 @@
-package com.example.n_fitness;
+package com.example.n_fitness.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.n_fitness.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -8,11 +8,8 @@ import android.app.Application;
  * This is used to set up the database to share across entire application
  *
  * */
-import android.app.Application;
-
-//import com.example.parstagram.models.Post;
-//import com.parse.Parse;
-//import com.parse.ParseObject;
+import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class ParseApplication extends Application {
     @Override
@@ -20,10 +17,10 @@ public class ParseApplication extends Application {
         super.onCreate();
 
 //        ParseObject.registerSubclass(Post.class);
-//
-//        Parse.initialize(new Parse.Configuration.Builder(this)
-//                .applicationId("n-parstagram")
-//                .clientKey("CodepathMoveFastParse")
-//                .server("https://n-parstagram.herokuapp.com/parse/").build());
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("n-fitness")
+                .clientKey("CodepathMoveFastParse")
+                .server("https://n-fitness.herokuapp.com/parse/").build());
     }
 }
