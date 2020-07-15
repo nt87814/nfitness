@@ -14,7 +14,7 @@ public class Challenge extends ParseObject  {
     public static final String KEY_FROM = "from";
     public static final String KEY_REC = "recipient";
     public static final String KEY_CREATED_AT = "createdAt";
-
+    public static final String KEY_COMPLETED = "completed";
 
     public Post getPost() { return (Post) getParseObject(KEY_POST); }
 

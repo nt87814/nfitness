@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.example.n_fitness.R;
 import com.example.n_fitness.fragments.ChallengesFragment;
 import com.example.n_fitness.fragments.ComposeFragment;
+import com.example.n_fitness.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_profile:
                     default:
-                        fragment = new ComposeFragment();
+                        fragment = new ProfileFragment();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

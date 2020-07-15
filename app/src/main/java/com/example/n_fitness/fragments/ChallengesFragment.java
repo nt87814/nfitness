@@ -20,6 +20,7 @@ import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +88,8 @@ public class ChallengesFragment extends Fragment {
         query.include(Challenge.KEY_REC);
         query.include(Challenge.KEY_POST);
         query.include(Challenge.KEY_DEADLINE);
+        query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
+        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
         query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
 
