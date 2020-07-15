@@ -5,10 +5,6 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
 @ParseClassName("Post")
 public class Post extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
@@ -34,7 +30,9 @@ public class Post extends ParseObject {
         put(KEY_IMAGE, parseFile);
     }
 
-    public ParseUser getUser() { return getParseUser(KEY_USER); }
+    public ParseUser getUser() {
+        return getParseUser(KEY_USER);
+    }
 
     public void setUser(ParseUser parseUser) {
         put(KEY_USER, parseUser);

@@ -1,32 +1,23 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.n_fitness.R;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-import java.io.File;
 
 /**
  * Fragment for composing a workout post
- *
+ * <p>
  * This fragment utilizes access to the camera
- *
- * */
+ */
 public class ComposeFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";

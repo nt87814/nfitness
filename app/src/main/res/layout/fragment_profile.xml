@@ -32,8 +32,21 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="23dp"
-        android:layout_toStartOf="@+id/btnProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage"
         tools:text="username" />
+
+    <TextView
+        android:id="@+id/tvStats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivProfileImage"
+        android:text="Stats: " />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProfileChallenges"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tvStats"
+        android:padding="8dp" />
 
 </RelativeLayout>
