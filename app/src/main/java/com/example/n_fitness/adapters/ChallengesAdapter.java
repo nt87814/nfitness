@@ -2,18 +2,23 @@ package com.example.n_fitness.adapters;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
+import com.example.n_fitness.fragments.DetailsFragment;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 
@@ -90,7 +95,18 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
         @Override
         public void onClick(View view) {
-
+            int position = getAdapterPosition();
+            Toast.makeText(context, "Item clicked at position: " + position, Toast.LENGTH_SHORT).show();
+            if (position != RecyclerView.NO_POSITION) {
+                Challenge challenge = challenges.get(position);
+                Post post = challenge.getPost();
+                DetailsFragment detailsFragment = new DetailsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("challenge", challenge);
+                bundle.putParcelable("post", post);
+                detailsFragment.setArguments(bundle);
+                switchFragment(R.id.flContainer, detailsFragment);
+            }
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -101,16 +117,24 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                     tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));
                     break;
                 case CURRENTPROFILE:
-                    tvDeadline.setText(getDisplayDate(challenge.getCompleted().toString()));
-                    break;
                 case USERPROFILE:
-                    System.out.println("High level");
+                    tvDeadline.setText(getDisplayDate(challenge.getCompleted().toString()));
                     break;
             }
             tvDescription.setText(post.getDescription());
             tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
             Glide.with(context).load(post.getImage().getUrl()).centerInside().into(ivImage);
         }
+    }
+
+    public void switchFragment(int id, Fragment fragment) {
+        if (context == null)
+            return;
+        if (context instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) context;
+            mainActivity.loadFragment(id, fragment);
+        }
+
     }
 
     public static String getTimeLeft(String rawJsonDate) {

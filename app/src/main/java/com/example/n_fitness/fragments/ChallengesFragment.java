@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ChallengesFragment extends Fragment {
 
-    public static final String TAG = "PostsFragment";
+    private static final String TAG = "PostsFragment";
     protected ChallengesAdapter adapter;
     protected List<Challenge> allChallenges;
 
