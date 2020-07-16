@@ -11,14 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
+import com.parse.ParseException;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.example.n_fitness.adapters.ChallengesAdapter.getTimeLeft;
 
@@ -37,6 +44,8 @@ public class DetailsFragment extends Fragment {
     private ImageView ivImage;
     private TextView tvDescription;
     private TextView tvTimestamp;
+    private Button btnComplete;
+    private Button btnChallenge;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -59,6 +68,8 @@ public class DetailsFragment extends Fragment {
         ivImage  = view.findViewById(R.id.ivImage);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvTimestamp = view.findViewById(R.id.tvTimestamp);
+        btnComplete = view.findViewById(R.id.btnComplete);
+        btnChallenge = view.findViewById(R.id.btnChallenge);
 
         challenge = bundle.getParcelable("challenge");
         post = bundle.getParcelable("post");
@@ -70,5 +81,16 @@ public class DetailsFragment extends Fragment {
         }
         tvDescription.setText(post.getDescription());
         tvTimestamp.setText(getTimeLeft(challenge.getDeadline().toString()));
+
+        btnComplete = view.findViewById(R.id.btnComplete);
+        btnChallenge = view.findViewById(R.id.btnChallenge);
+
+        btnComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                challenge.setCompleted();
+                challenge.saveInBackground();
+            }
+        });
     }
 }

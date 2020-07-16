@@ -4,6 +4,8 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -49,7 +51,13 @@ public class Challenge extends ParseObject {
         c.setTime(getCreatedAt()); // User start date
         c.add(Calendar.DATE, 7); // Adding 7 days
         put(KEY_DEADLINE, c.getTime());
+        getUpdatedAt();
     }
 
     public Date getCompleted() { return getDate(KEY_COMPLETED); }
+
+    public void setCompleted() {
+        Date date1 = new Date();
+        put(KEY_COMPLETED, date1);
+    }
 }
