@@ -142,10 +142,10 @@ An app for users to challenge their friends by creating workouts with deadlines
    
    #### Category
    
-      | Property      | Type     | Description |
-      | ------------- | -------- | ------------|
-      | id      | String   | unique id for the category |  
-      | Name      | String   | Name describes the category | 
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | id      | String   | unique id for the category |  
+  | Name      | String   | Name describes the category | 
    
 ### Networking
 

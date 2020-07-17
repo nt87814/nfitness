@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.parse.ParseException;
@@ -90,6 +92,22 @@ public class DetailsFragment extends Fragment {
             public void onClick(View view) {
                 challenge.setCompleted();
                 challenge.saveInBackground();
+            }
+        });
+
+        btnChallenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Challenge newChallenge = new Challenge();
+                newChallenge.setPost(post);
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                CreateChallengeFragment createChallengeDialogFragment = CreateChallengeFragment.newInstance("Some Title");
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("post", post);
+                createChallengeDialogFragment.setArguments(bundle);
+//                switchFragment(R.id.flContainer, detailsFragment);
+                createChallengeDialogFragment.show(fm, "fragment_create_challenge");
             }
         });
     }

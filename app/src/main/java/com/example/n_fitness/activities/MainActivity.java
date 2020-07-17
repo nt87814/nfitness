@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.n_fitness.R;
 import com.example.n_fitness.fragments.ChallengesFragment;
 import com.example.n_fitness.fragments.ComposeFragment;
+import com.example.n_fitness.fragments.CreateChallengeFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -60,4 +61,5 @@ public class MainActivity extends AppCompatActivity {
         ft.addToBackStack(null);
         ft.commit();
     }
+
 }

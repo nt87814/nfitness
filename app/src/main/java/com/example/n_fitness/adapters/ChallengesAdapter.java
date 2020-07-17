@@ -114,7 +114,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             Post post = challenge.getPost();
             switch(fragmentScreen) {
                 case HOME:
-                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));
+                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));    //need to make required
                     break;
                 case CURRENTPROFILE:
                 case USERPROFILE:

@@ -48,10 +48,8 @@ public class Challenge extends ParseObject {
 
     public void setDeadline() {
         Calendar c = Calendar.getInstance();
-        c.setTime(getCreatedAt()); // User start date
         c.add(Calendar.DATE, 7); // Adding 7 days
         put(KEY_DEADLINE, c.getTime());
-        getUpdatedAt();
     }
 
     public Date getCompleted() { return getDate(KEY_COMPLETED); }
