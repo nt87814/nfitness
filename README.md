@@ -105,7 +105,7 @@ An app for users to challenge their friends by creating workouts with deadlines
    | ------------- | -------- | ------------|
    | id      | String   | unique id for the user post (default field) |
    | author        | Pointer to User| user who created the workout |
-   | type        | String| workout can be endurance, strength, flexibility |
+   | type        | pointer to a category | workout can be endurance, strength, flexibility |
    | image         | File     | image that user posts |
    | caption       | String   | image caption by author |
    | description   | String   | workout description |
@@ -121,9 +121,9 @@ An app for users to challenge their friends by creating workouts with deadlines
    | owner_id      | Pointer to User| user who sent this challenge |
    | workout_id    | pointer to workout | reference to workout |
    | recipient_id  | Pointer to user| the user the author sent this to |
-   | started       | DateTime | date when workout was added |
    | deadline      | DateTime | date when post expires |
    | completed     | DateTime | Shows whether the user has completed the challenge in time |
+   | time      | Number | time for endurance workout |
 
    
    
@@ -135,10 +135,17 @@ An app for users to challenge their friends by creating workouts with deadlines
    | first_name      | String   | User's first name |  
    | last_name      | String   | User's last name |
    | password      | String   | User's password |
-   | created_at     | DateTime | date when post is created (default field) |
-   | updated_at     | DateTime | date when post is last updated (default field) |
-   | friends      | Array of user ids   | List of friends |
+   | image      | File | Profile picture |
+   | created_at     | DateTime | date when user is created (default field) |
+   | updated_at     | DateTime | date when user is last updated (default field) |
+   | friends      | Array of users   | List of friends |
    
+   #### Category
+   
+      | Property      | Type     | Description |
+      | ------------- | -------- | ------------|
+      | id      | String   | unique id for the category |  
+      | Name      | String   | Name describes the category | 
    
 ### Networking
 
