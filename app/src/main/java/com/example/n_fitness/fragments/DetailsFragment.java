@@ -1,13 +1,6 @@
 package com.example.n_fitness.fragments;
 
-import android.media.Image;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,24 +9,22 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
-import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
-import com.parse.ParseException;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static com.example.n_fitness.adapters.ChallengesAdapter.getTimeLeft;
 
 public class DetailsFragment extends Fragment {
 
-    private static final String TAG ="DetailsFragment";
+    private static final String TAG = "DetailsFragment";
 
     private Bundle bundle;
     private Challenge challenge;
@@ -65,9 +56,9 @@ public class DetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         tvUsername = view.findViewById(R.id.tvUsername);
-        btnLike  = view.findViewById(R.id.btnLike);
+        btnLike = view.findViewById(R.id.btnLike);
         tvLikes = view.findViewById(R.id.tvLikes);
-        ivImage  = view.findViewById(R.id.ivImage);
+        ivImage = view.findViewById(R.id.ivImage);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvTimestamp = view.findViewById(R.id.tvTimestamp);
         btnComplete = view.findViewById(R.id.btnComplete);

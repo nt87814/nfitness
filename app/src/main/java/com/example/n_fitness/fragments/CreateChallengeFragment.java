@@ -1,26 +1,22 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.n_fitness.ContactChip;
 import com.example.n_fitness.R;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -34,10 +30,8 @@ public class CreateChallengeFragment extends DialogFragment {
 
     public static final String TAG = "CreateChallengeFragment";
     private List<ContactChip> contactList;
-    Button btnValidate;
-    TextView tvChipList;
     ChipsInput chipsInput;
-    Button btnDone;
+    Button btnConfirm;
     Post post;
 
     private Bundle bundle;
@@ -69,31 +63,15 @@ public class CreateChallengeFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         chipsInput = view.findViewById(R.id.chips_input);
-        btnValidate = view.findViewById(R.id.btnValidate);
-        tvChipList = view.findViewById(R.id.tvChipList);
-        btnDone = view.findViewById(R.id.btnDone);
+        btnConfirm = view.findViewById(R.id.btnConfirm);
         contactList = new ArrayList<>();
         chipsInput.setFilterableList(contactList);
 
-        btnValidate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            // get the list
-                List<ContactChip> contactsSelected = (List<ContactChip>) chipsInput.getSelectedChipList();
-                String listString = "";
-                for (ContactChip chip: contactsSelected) {
-                    listString += chip.getLabel() + ", ";
-                }
-
-                tvChipList.setText(listString);
-            }
-        });
-
-        btnDone.setOnClickListener(new View.OnClickListener() {
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 List<ContactChip> contactsSelected = (List<ContactChip>) chipsInput.getSelectedChipList();
-                for (ContactChip chip: contactsSelected) {
+                for (ContactChip chip : contactsSelected) {
                     addChallenge(chip.getUser());
                 }
             }

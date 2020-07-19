@@ -37,6 +37,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     private Context context;
     private List<Challenge> challenges;
     FragmentScreen fragmentScreen;
+
     public static enum FragmentScreen {
         HOME,
         CURRENTPROFILE,
@@ -96,7 +97,6 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Toast.makeText(context, "Item clicked at position: " + position, Toast.LENGTH_SHORT).show();
             if (position != RecyclerView.NO_POSITION) {
                 Challenge challenge = challenges.get(position);
                 Post post = challenge.getPost();
@@ -112,7 +112,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void bind(Challenge challenge) {
             Post post = challenge.getPost();
-            switch(fragmentScreen) {
+            switch (fragmentScreen) {
                 case HOME:
                     tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));    //need to make required
                     break;

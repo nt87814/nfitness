@@ -2,6 +2,7 @@ package com.example.n_fitness;
 
 import android.app.Application;
 
+import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.parse.Parse;
@@ -20,6 +21,7 @@ public class ParseApplication extends Application {
 
         ParseObject.registerSubclass(Challenge.class);
         ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(Category.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("n-fitness")

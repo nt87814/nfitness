@@ -13,6 +13,8 @@ public class Post extends ParseObject {
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_LIKES = "likes";
     public static final String KEY_DEADLINE = "deadline";
+    public static final String KEY_CATEGORY = "category";
+
 
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
@@ -38,4 +40,11 @@ public class Post extends ParseObject {
         put(KEY_USER, parseUser);
     }
 
+    public Category getCategory() {
+        return (Category) getParseObject(KEY_CATEGORY);
+    }
+
+    public void setCategory(Category category) {
+        put(KEY_CATEGORY, category);
+    }
 }

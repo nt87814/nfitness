@@ -3,14 +3,13 @@ package com.example.n_fitness;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.pchmn.materialchips.model.ChipInterface;
 
 public class ContactChip implements ChipInterface {
 
     private String id;
-//    private Uri avatarUri;
+    //    private Uri avatarUri;
     private String name;
     private ParseUser user;
 
