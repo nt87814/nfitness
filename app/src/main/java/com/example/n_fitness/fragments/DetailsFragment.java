@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 
@@ -78,28 +79,44 @@ public class DetailsFragment extends Fragment {
         btnComplete = view.findViewById(R.id.btnComplete);
         btnChallenge = view.findViewById(R.id.btnChallenge);
 
-        btnComplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                challenge.setCompleted();
-                challenge.saveInBackground();
-            }
+        btnComplete.setOnClickListener(view12 -> {
+            challenge.setCompleted();
+            challenge.saveInBackground();
+            switchFragment(R.id.flContainer, new ProfileFragment());
         });
 
-        btnChallenge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Challenge newChallenge = new Challenge();
-                newChallenge.setPost(post);
+        btnChallenge.setOnClickListener(view1 -> {
+            Challenge newChallenge = new Challenge();
+            newChallenge.setPost(post);
 
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                CreateChallengeFragment createChallengeDialogFragment = CreateChallengeFragment.newInstance("Some Title");
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("post", post);
-                createChallengeDialogFragment.setArguments(bundle);
-//                switchFragment(R.id.flContainer, detailsFragment);
-                createChallengeDialogFragment.show(fm, "fragment_create_challenge");
-            }
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            CreateChallengeFragment createChallengeDialogFragment = CreateChallengeFragment.newInstance("Some Title");
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("post", post);
+            createChallengeDialogFragment.setArguments(bundle);
+            createChallengeDialogFragment.show(fm, "fragment_create_challenge");
         });
+
+        ivProfileImage.setOnClickListener(view14 -> goUserFragment());
+
+        tvUsername.setOnClickListener(view13 -> goUserFragment());
+    }
+
+    private void goUserFragment() {
+        UserFragment userFragment = new UserFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", challenge.getFrom());
+        userFragment.setArguments(bundle);
+        switchFragment(R.id.flContainer, userFragment);
+    }
+
+    public void switchFragment(int id, Fragment fragment) {
+        if (getContext() == null)
+            return;
+        if (getContext() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getContext();
+            mainActivity.loadFragment(id, fragment);
+        }
+
     }
 }

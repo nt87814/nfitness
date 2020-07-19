@@ -23,6 +23,7 @@ import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -60,8 +61,9 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         tvUsername = view.findViewById(R.id.tvUsername);
-        tvUsername.setText(currentUser.getUsername());
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
+
+        tvUsername.setText(currentUser.getUsername());
         ParseFile profileImage = currentUser.getParseFile("image");
         if (profileImage != null) {
             Glide.with(getContext()).load(profileImage.getUrl()).into(ivProfileImage);
@@ -87,7 +89,7 @@ public class ProfileFragment extends Fragment {
         query();
     }
 
-    private void query() {
+    protected void query() {
         ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
         query.include(Challenge.KEY_FROM);
         query.include(Challenge.KEY_REC);
@@ -122,7 +124,7 @@ public class ProfileFragment extends Fragment {
         getActivity().finish();
     }
 
-    private String getTopCategory() {
+    protected String getTopCategory() {
         String topCategory = "";
 
         if (completedChallenges.isEmpty()) {
