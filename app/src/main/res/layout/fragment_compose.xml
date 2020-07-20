@@ -13,11 +13,16 @@
         android:ems="10"
         android:hint="Description" />
 
+    <Spinner
+        android:id="@+id/sCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
-        android:id="@+id/btnCaptureImage"
+        android:id="@+id/btnGetImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Take Picture" />
+        android:text="Choose Picture" />
 
     <ImageView
         android:id="@+id/ivPostImage"
