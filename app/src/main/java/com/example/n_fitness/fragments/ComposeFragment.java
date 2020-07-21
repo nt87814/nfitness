@@ -127,6 +127,11 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         if (photoFile != null) {
             post.setImage(new ParseFile(photoFile));
         }
+
+        if (selectedCategory == null) {
+            Toast.makeText(getContext(), "Please select a category!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         post.setCategory(selectedCategory);
         post.saveInBackground(e -> {
             if (e != null) {
@@ -168,7 +173,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             if (data == null) {
-                //Display an error
+                Toast.makeText(getContext(), "Error getting image!", Toast.LENGTH_SHORT).show();
                 return;
             }
             imageUri = data.getData();

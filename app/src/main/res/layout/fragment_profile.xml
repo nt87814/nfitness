@@ -12,17 +12,28 @@
         android:padding="8dp"
         tools:src="@tools:sample/avatars" />
 
-
     <Button
         android:id="@+id/btnLogout"
-        android:layout_width="151dp"
-        android:layout_height="38dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/btnEdit"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
         android:text="Logout" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:text="Edit" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -39,7 +50,8 @@
         android:id="@+id/tvStats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivProfileImage"
+        android:layout_below="@+id/btnLogout"
+        android:layout_marginTop="8dp"
         android:text="Stats: " />
 
     <TextView
@@ -63,5 +75,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tvTopLabel"
         android:padding="8dp" />
+
 
 </RelativeLayout>
