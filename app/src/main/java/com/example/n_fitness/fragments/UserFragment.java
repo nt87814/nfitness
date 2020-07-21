@@ -51,6 +51,8 @@ public class UserFragment extends ProfileFragment {
 
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setVisibility(View.GONE);
+        btnEdit = view.findViewById(R.id.btnEdit);
+        btnEdit.setVisibility(View.GONE);
 
         tvTopLabel = view.findViewById(R.id.tvTopLabel);
         tvTop = view.findViewById(R.id.tvTop);
@@ -79,6 +81,7 @@ public class UserFragment extends ProfileFragment {
 
         query.findInBackground((challenges, e) -> {
             if (e != null) {
+                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
 //                Log.e(TAG, "Issue with getting challenges", e);
                 return;
             }
