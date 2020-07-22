@@ -3,6 +3,8 @@ package com.example.n_fitness.adapters;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         HOME,
         CURRENTPROFILE,
         USERPROFILE
+
     }
 
     public ChallengesAdapter(Context context, List<Challenge> challenges, FragmentScreen fs) {
@@ -104,6 +107,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("challenge", challenge);
                 bundle.putParcelable("post", post);
+                bundle.putString("screenFrom", fragmentScreen.name());
                 detailsFragment.setArguments(bundle);
                 switchFragment(R.id.flContainer, detailsFragment);
             }

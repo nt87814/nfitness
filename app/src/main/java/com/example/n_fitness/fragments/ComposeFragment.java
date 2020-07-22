@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.adapters.SpinAdapter;
 import com.example.n_fitness.models.Category;
@@ -38,6 +39,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
 
 import java.io.File;
@@ -67,6 +69,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public String photoFileName = "photo.jpg";
     private Uri imageUri;
     private SpinAdapter adapter;
+    private Bitmap imageBitmap;
 
 
     public ComposeFragment() {
@@ -92,8 +95,16 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
         btnSubmit.setOnClickListener(view1 -> {
             String description = etDescription.getText().toString();
-            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (description.isEmpty()) {
+                Toast.makeText(getContext(), "Description cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            if (photoFile == null || ivPostImage.getDrawable() == null) {
+                Toast.makeText(getContext(), "There is no image!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            ParseUser currentUser = ParseUser.getCurrentUser();
             savePost(description, currentUser, photoFile);
         });
 
@@ -124,22 +135,29 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         Post post = new Post();
         post.setDescription(description);
         post.setUser(currentUser);
-        if (photoFile != null) {
-            post.setImage(new ParseFile(photoFile));
-        }
 
         if (selectedCategory == null) {
             Toast.makeText(getContext(), "Please select a category!", Toast.LENGTH_SHORT).show();
             return;
         }
         post.setCategory(selectedCategory);
-        post.saveInBackground(e -> {
-            if (e != null) {
-                Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+
+
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    //                Toast.makeText(getActivity(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.getMessage());
+                    return;
+                }
+                if (photoFile != null) {
+                    post.setImage(new ParseFile(photoFile));
+                }
+                Toast.makeText(getContext(), "Post save was successful!", Toast.LENGTH_SHORT).show();
+                etDescription.setText("");
+                ivPostImage.setImageResource(0);
             }
-            Toast.makeText(getContext(), "Post save was successful!", Toast.LENGTH_SHORT).show();
-            etDescription.setText("");
-            ivPostImage.setImageResource(0);
         });
     }
 
@@ -150,7 +168,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             @Override
             public void done(List<Category> categories, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Issue with getting categories", e);
+                    Toast.makeText(getContext(), "Issue with getting categories", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -177,7 +195,8 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                 return;
             }
             imageUri = data.getData();
-            ivPostImage.setImageURI(imageUri);
+            Glide.with(getContext()).load(imageUri).into(ivPostImage);
+            photoFile = new File(imageUri.getPath());
         }
     }
 

@@ -44,5 +44,6 @@ dependencies {
     compile 'com.github.pchmn:MaterialChipsInput:1.0.8'
     implementation 'com.synnapps:carouselview:0.1.4'
     compile 'com.synnapps:carouselview:0.1.5'
+    implementation 'com.google.android.material:material:<version>'
 
 }

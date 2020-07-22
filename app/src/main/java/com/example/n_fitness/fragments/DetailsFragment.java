@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.MainActivity;
+import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 
@@ -30,6 +31,7 @@ public class DetailsFragment extends Fragment {
     private Bundle bundle;
     private Challenge challenge;
     private Post post;
+    private ChallengesAdapter.FragmentScreen fragmentScreen;
 
     private ImageView ivProfileImage;
     private TextView tvUsername;
@@ -77,13 +79,20 @@ public class DetailsFragment extends Fragment {
         tvTimestamp.setText(getTimeLeft(challenge.getDeadline().toString()));
 
         btnComplete = view.findViewById(R.id.btnComplete);
+        fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString("screenFrom"));
+        if (fragmentScreen == ChallengesAdapter.FragmentScreen.CURRENTPROFILE || fragmentScreen == ChallengesAdapter.FragmentScreen.USERPROFILE) {
+            btnComplete.setVisibility(View.GONE);
+        }
+
+        else {
+            btnComplete.setOnClickListener(view12 -> {
+                challenge.setCompleted();
+                challenge.saveInBackground();
+                switchFragment(R.id.flContainer, new ProfileFragment());
+            });
+        }
         btnChallenge = view.findViewById(R.id.btnChallenge);
 
-        btnComplete.setOnClickListener(view12 -> {
-            challenge.setCompleted();
-            challenge.saveInBackground();
-            switchFragment(R.id.flContainer, new ProfileFragment());
-        });
 
         btnChallenge.setOnClickListener(view1 -> {
             Challenge newChallenge = new Challenge();
