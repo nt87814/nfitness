@@ -60,7 +60,7 @@ public class ExploreFragment extends Fragment {
 
         allCategories = new ArrayList<>();
 
-        mainAdapter = new MainAdapter(getContext(), listOfListOfPosts);
+        mainAdapter = new MainAdapter(getContext(), listOfListOfPosts, allCategories);
         rvRootView.setAdapter(mainAdapter);
         rvRootView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

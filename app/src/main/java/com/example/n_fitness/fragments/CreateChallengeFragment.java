@@ -85,7 +85,7 @@ public class CreateChallengeFragment extends DialogFragment {
             @Override
             public void done(List<ParseUser> users, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Issue with getting challenges", e);
+                    Log.e(TAG, "Issue with getting users", e);
                     return;
                 }
 

@@ -76,20 +76,21 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
                 Glide.with(mContext).load(image.getUrl()).centerInside().into(ivPost);
             }
             tvTitle.setText(post.getDescription());
-            card.setOnLongClickListener(new View.OnLongClickListener() {
+
+            card.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View view) {
+                public void onClick(View view) {
                     Challenge newChallenge = new Challenge();
                     newChallenge.setPost(post);
                     FragmentManager fm = ((AppCompatActivity) mContext).getSupportFragmentManager();
-                    AddChallengeFragment addChallengeDialogFragment = AddChallengeFragment.newInstance("Some Title");
+                    AddChallengeFragment addChallengeDialogFragment = AddChallengeFragment.newInstance("Add to my Challenges?");
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("post", post);
                     addChallengeDialogFragment.setArguments(bundle);
                     addChallengeDialogFragment.show(fm, "fragment_add_challenge");
-                    return true;
                 }
             });
+
         }
 
     }

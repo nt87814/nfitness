@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.n_fitness.R;
 import com.example.n_fitness.fragments.ExploreFragment;
+import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Post;
 
 import java.util.List;
@@ -20,10 +22,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     private Context context;
     private List<List<Post>> mRows;
+    private List<Category> categories;
 
-    public MainAdapter(Context context, List<List<Post>>  objects) {
+    public MainAdapter(Context context, List<List<Post>>  objects, List<Category> categories) {
         this.context = context;
         mRows = objects;
+        this.categories = categories;
     }
 
     @NonNull
@@ -43,6 +47,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.rvRow.setHasFixedSize(true); //?
         RowAdapter rowsAdapter = new RowAdapter(context, rowPosts);
         holder.rvRow.setAdapter(rowsAdapter);
+        holder.tvRowTitle.setText(categories.get(position).getName());
 
         final RecyclerView finalRecyclerView = holder.rvRow;
         finalRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -66,10 +71,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
 
         public  RecyclerView rvRow;
+        public TextView tvRowTitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rvRow = itemView.findViewById(R.id.rvRow);
+            tvRowTitle = itemView.findViewById(R.id.tvRowTitle);
         }
 
         public void bind(List<Post> rowPosts) {

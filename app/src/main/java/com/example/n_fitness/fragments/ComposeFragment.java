@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import com.parse.ParseUser;
 import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -65,11 +67,10 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     private List<Category> allCategories;
     private Category selectedCategory;
 
-    private File photoFile;
+    private ParseFile photoFile;
     public String photoFileName = "photo.jpg";
     private Uri imageUri;
     private SpinAdapter adapter;
-    private Bitmap imageBitmap;
 
 
     public ComposeFragment() {
@@ -79,7 +80,6 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_compose, container, false);
     }
 
@@ -100,12 +100,12 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                 return;
             }
 
-            if (photoFile == null || ivPostImage.getDrawable() == null) {
+            if (ivPostImage.getDrawable() == null) {
                 Toast.makeText(getContext(), "There is no image!", Toast.LENGTH_SHORT).show();
                 return;
             }
             ParseUser currentUser = ParseUser.getCurrentUser();
-            savePost(description, currentUser, photoFile);
+            savePost(description, currentUser);
         });
 
         btnGetImage.setOnClickListener(view12 -> {
@@ -131,29 +131,31 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         queryCategories();
     }
 
-    private void savePost(String description, ParseUser currentUser, File photoFile) {
+    private void savePost(String description, ParseUser currentUser) {
         Post post = new Post();
         post.setDescription(description);
         post.setUser(currentUser);
+        Bitmap imageToBeSent = ((BitmapDrawable) ivPostImage.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        imageToBeSent.compress(Bitmap.CompressFormat.PNG,5, stream);
+        byte[] imageRec = stream.toByteArray();
+        photoFile = new ParseFile(photoFileName, imageRec);
 
         if (selectedCategory == null) {
             Toast.makeText(getContext(), "Please select a category!", Toast.LENGTH_SHORT).show();
             return;
         }
         post.setCategory(selectedCategory);
-
-
+        ParseFile finalPhotoFile = photoFile;
+        post.setImage(finalPhotoFile);
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    //                Toast.makeText(getActivity(), "Error while saving!", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, e.getMessage());
+                    Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (photoFile != null) {
-                    post.setImage(new ParseFile(photoFile));
-                }
+
                 Toast.makeText(getContext(), "Post save was successful!", Toast.LENGTH_SHORT).show();
                 etDescription.setText("");
                 ivPostImage.setImageResource(0);
@@ -196,7 +198,6 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             }
             imageUri = data.getData();
             Glide.with(getContext()).load(imageUri).into(ivPostImage);
-            photoFile = new File(imageUri.getPath());
         }
     }
 
