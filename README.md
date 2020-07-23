@@ -16,6 +16,7 @@ An app for users to challenge their friends by creating workouts with deadlines
 Here's a walkthrough of implemented user stories:
 
 <img src='walkthrough1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='walkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]

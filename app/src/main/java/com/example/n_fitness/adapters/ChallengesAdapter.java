@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.fragments.DetailsFragment;
@@ -29,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -82,19 +85,76 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+//        class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView ivImage;
         private TextView tvDeadline;
         private TextView tvDescription;
         private TextView tvFrom;
+        private TextView tvComplete;
+        private SwipeLayout swipeLayout;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+            ViewHolder v = this;
+            itemView.setOnClickListener(v);
+            swipeLayout =  (SwipeLayout)itemView.findViewById(R.id.swipeItem);
+            swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+            swipeLayout.addDrag(SwipeLayout.DragEdge.Left, itemView.findViewById(R.id.bottom_wrapper));
+
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDeadline = itemView.findViewById(R.id.tvDeadline);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvFrom = itemView.findViewById(R.id.tvFrom);
+            tvComplete = itemView.findViewById(R.id.tvComplete);
+
+            swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                @Override
+                public void onClose(SwipeLayout layout) {
+                    //when the SurfaceView totally cover the BottomView.
+                    itemView.setOnClickListener(v);
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                    //you are swiping.
+                }
+
+                @Override
+                public void onStartOpen(SwipeLayout layout) {
+                    itemView.setOnClickListener(null);
+                }
+
+                @Override
+                public void onOpen(SwipeLayout layout) {
+                    //when the BottomView totally show.
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                    //when user's hand released.
+                }
+            });
+
+            tvComplete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Challenge challenge = challenges.get(position);
+                        challenge.setCompleted();
+                        challenge.saveInBackground();
+                        challenges.remove(position);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
         }
 
         @Override
@@ -113,7 +173,6 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             }
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
         public void bind(Challenge challenge) {
             Post post = challenge.getPost();
             switch (fragmentScreen) {
@@ -122,7 +181,9 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                     break;
                 case CURRENTPROFILE:
                 case USERPROFILE:
+                    swipeLayout.setSwipeEnabled(false);
                     tvDeadline.setText(getDisplayDate(challenge.getCompleted().toString()));
+                    tvFrom.setVisibility(View.GONE);
                     break;
             }
             tvDescription.setText(post.getDescription());
