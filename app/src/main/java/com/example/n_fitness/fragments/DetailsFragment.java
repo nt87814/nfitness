@@ -82,9 +82,7 @@ public class DetailsFragment extends Fragment {
         fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString("screenFrom"));
         if (fragmentScreen == ChallengesAdapter.FragmentScreen.CURRENTPROFILE || fragmentScreen == ChallengesAdapter.FragmentScreen.USERPROFILE) {
             btnComplete.setVisibility(View.GONE);
-        }
-
-        else {
+        } else {
             btnComplete.setOnClickListener(view12 -> {
                 challenge.setCompleted();
                 challenge.saveInBackground();

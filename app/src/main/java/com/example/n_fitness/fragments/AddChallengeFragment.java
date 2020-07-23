@@ -1,29 +1,22 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.n_fitness.ContactChip;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import com.example.n_fitness.R;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddChallengeFragment extends DialogFragment {
 
@@ -57,10 +50,10 @@ public class AddChallengeFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         btnConfirm = view.findViewById(R.id.btnConfirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            addChallenge(ParseUser.getCurrentUser());
-          }
+            @Override
+            public void onClick(View view) {
+                addChallenge(ParseUser.getCurrentUser());
+            }
         });
     }
 

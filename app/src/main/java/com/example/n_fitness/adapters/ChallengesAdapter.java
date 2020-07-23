@@ -1,20 +1,14 @@
 package com.example.n_fitness.adapters;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,11 +36,10 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     private List<Challenge> challenges;
     FragmentScreen fragmentScreen;
 
-    public static enum FragmentScreen {
+    public enum FragmentScreen {
         HOME,
         CURRENTPROFILE,
         USERPROFILE
-
     }
 
     public ChallengesAdapter(Context context, List<Challenge> challenges, FragmentScreen fs) {
@@ -85,7 +77,6 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView ivImage;
         private TextView tvDeadline;
@@ -99,7 +90,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             super(itemView);
             ViewHolder v = this;
             itemView.setOnClickListener(v);
-            swipeLayout =  (SwipeLayout)itemView.findViewById(R.id.swipeItem);
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipeItem);
             swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
             swipeLayout.addDrag(SwipeLayout.DragEdge.Left, itemView.findViewById(R.id.bottom_wrapper));
 

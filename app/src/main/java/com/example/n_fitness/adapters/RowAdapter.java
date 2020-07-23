@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.fragments.AddChallengeFragment;
-import com.example.n_fitness.fragments.CreateChallengeFragment;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.google.android.material.card.MaterialCardView;
@@ -25,6 +24,9 @@ import com.parse.ParseFile;
 
 import java.util.List;
 
+/**
+ * Adapter for posts within category rows in explore page
+ */
 public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
 
     private List<Post> mPosts;
@@ -65,8 +67,8 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
-            ivPost =(ImageView)itemView.findViewById(R.id.ivPost);
-            tvTitle =(TextView)itemView.findViewById(R.id.tvTitle);
+            ivPost = (ImageView) itemView.findViewById(R.id.ivPost);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             card = itemView.findViewById(R.id.card);
         }
 

@@ -1,6 +1,11 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,16 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.n_fitness.R;
 import com.example.n_fitness.adapters.MainAdapter;
 import com.example.n_fitness.models.Category;
-import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -28,7 +26,7 @@ import java.util.List;
 
 public class ExploreFragment extends Fragment {
 
-    public static final String TAG ="ExploreFragment";
+    public static final String TAG = "ExploreFragment";
 
     private RecyclerView rvRootView;
     private RecyclerView.Adapter adapter;
@@ -52,7 +50,7 @@ public class ExploreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvRootView = view.findViewById(R.id.rvRootView);
-        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvRootView.setLayoutManager(layoutManager);
         rvRootView.setHasFixedSize(true);
 

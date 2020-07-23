@@ -1,24 +1,17 @@
 package com.example.n_fitness.fragments;
 
 import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,21 +26,15 @@ import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.adapters.SpinAdapter;
 import com.example.n_fitness.models.Category;
-import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,8 +111,10 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                                        int position, long id) {
                 selectedCategory = adapter.getItem(position);
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> adapter) {  }
+            public void onNothingSelected(AdapterView<?> adapter) {
+            }
         });
 
         queryCategories();
@@ -137,7 +126,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         post.setUser(currentUser);
         Bitmap imageToBeSent = ((BitmapDrawable) ivPostImage.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        imageToBeSent.compress(Bitmap.CompressFormat.PNG,5, stream);
+        imageToBeSent.compress(Bitmap.CompressFormat.PNG, 5, stream);
         byte[] imageRec = stream.toByteArray();
         photoFile = new ParseFile(photoFileName, imageRec);
 

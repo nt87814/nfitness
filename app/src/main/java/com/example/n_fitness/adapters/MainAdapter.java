@@ -12,19 +12,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.n_fitness.R;
-import com.example.n_fitness.fragments.ExploreFragment;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Post;
 
 import java.util.List;
 
+/**
+ * Adapter for List of rows in the explore page for viewing all posts (workouts) by category
+ */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     private Context context;
     private List<List<Post>> mRows;
     private List<Category> categories;
 
-    public MainAdapter(Context context, List<List<Post>>  objects, List<Category> categories) {
+    public MainAdapter(Context context, List<List<Post>> objects, List<Category> categories) {
         this.context = context;
         mRows = objects;
         this.categories = categories;
@@ -42,7 +44,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         List<Post> rowPosts = mRows.get(position);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.rvRow.setLayoutManager(layoutManager);
         holder.rvRow.setHasFixedSize(true); //?
         RowAdapter rowsAdapter = new RowAdapter(context, rowPosts);
@@ -68,9 +70,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         return mRows.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public  RecyclerView rvRow;
+        public RecyclerView rvRow;
         public TextView tvRowTitle;
 
         public ViewHolder(@NonNull View itemView) {
@@ -79,8 +81,5 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             tvRowTitle = itemView.findViewById(R.id.tvRowTitle);
         }
 
-        public void bind(List<Post> rowPosts) {
-
-        }
     }
 }

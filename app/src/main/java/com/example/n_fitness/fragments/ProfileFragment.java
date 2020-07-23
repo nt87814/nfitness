@@ -30,7 +30,6 @@ import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -199,7 +198,7 @@ public class ProfileFragment extends Fragment {
 
     public File getPhotoFileUri(String fileName) {
         File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
             Log.d(TAG, "failed to create directory");
         }
 
