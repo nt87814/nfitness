@@ -44,8 +44,8 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
  */
 public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Challenge> challenges;
+    private static Context context;
+    private static List<Challenge> challenges;
     private FragmentScreen fragmentScreen;
     private Location mCurrentLocation;
 

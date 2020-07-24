@@ -18,8 +18,8 @@ import java.util.ArrayList;
  */
 public class SpinAdapter extends ArrayAdapter<Category> {
 
-    private Context context;
-    private ArrayList<Category> categories;
+    private static Context context;
+    private static ArrayList<Category> categories;
 
     public SpinAdapter(@NonNull Context context, int resource, ArrayList<Category> values) {
         super(context, resource);

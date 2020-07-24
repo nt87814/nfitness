@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
-    private Context context;
-    private List<List<Post>> mRows;
-    private List<Category> categories;
+    private static Context context;
+    private static List<List<Post>> mRows;
+    private static List<Category> categories;
 
     public MainAdapter(Context context, List<List<Post>> objects, List<Category> categories) {
         this.context = context;

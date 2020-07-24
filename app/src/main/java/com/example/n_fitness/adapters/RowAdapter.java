@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
 
-    private List<Post> mPosts;
-    private Context mContext;
+    private static Context mContext;
+    private static List<Post> mPosts;
 
     public RowAdapter(Context context, List<Post> objects) {
         this.mContext = context;
