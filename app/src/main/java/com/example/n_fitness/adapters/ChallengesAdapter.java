@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,7 +91,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView ivImage;
         private TextView tvDeadline;
@@ -98,12 +99,11 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         private TextView tvFrom;
         private TextView tvComplete;
         private SwipeLayout swipeLayout;
+        private LinearLayout ll_surface_view;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ViewHolder v = this;
-            itemView.setOnClickListener(v);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipeItem);
             swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
             swipeLayout.addDrag(SwipeLayout.DragEdge.Left, itemView.findViewById(R.id.bottom_wrapper));
@@ -113,17 +113,29 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvFrom = itemView.findViewById(R.id.tvFrom);
             tvComplete = itemView.findViewById(R.id.tvComplete);
+            ll_surface_view = itemView.findViewById(R.id.ll_surface_view);
+
+            ll_surface_view.setOnClickListener(view -> {
+                if(swipeLayout.getOpenStatus() == SwipeLayout.Status.Close){
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Challenge challenge = challenges.get(position);
+                        Post post = challenge.getPost();
+                        DetailsFragment detailsFragment = new DetailsFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("challenge", challenge);
+                        bundle.putParcelable("post", post);
+                        bundle.putString("screenFrom", fragmentScreen.name());
+                        detailsFragment.setArguments(bundle);
+                        switchFragment(R.id.flContainer, detailsFragment);
+                    }
+                }
+            });
 
             swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onClose(SwipeLayout layout) {
                     //when the SurfaceView totally cover the BottomView.
-                    itemView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            itemView.setOnClickListener(v);
-                        }
-                    }, 500);
                 }
 
                 @Override
@@ -133,7 +145,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
-                    itemView.setOnClickListener(null);
+
                 }
 
                 @Override
@@ -166,22 +178,6 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                     }
                 }
             });
-        }
-
-        @Override
-        public void onClick(View view) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                Challenge challenge = challenges.get(position);
-                Post post = challenge.getPost();
-                DetailsFragment detailsFragment = new DetailsFragment();
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("challenge", challenge);
-                bundle.putParcelable("post", post);
-                bundle.putString("screenFrom", fragmentScreen.name());
-                detailsFragment.setArguments(bundle);
-                switchFragment(R.id.flContainer, detailsFragment);
-            }
         }
 
         public void bind(Challenge challenge) {
