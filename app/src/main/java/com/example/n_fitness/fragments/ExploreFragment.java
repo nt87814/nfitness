@@ -24,6 +24,9 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment for viewing all of the workouts by category
+ */
 public class ExploreFragment extends Fragment {
 
     public static final String TAG = "ExploreFragment";
@@ -54,7 +57,7 @@ public class ExploreFragment extends Fragment {
         rvRootView.setLayoutManager(layoutManager);
         rvRootView.setHasFixedSize(true);
 
-        listOfListOfPosts = new ArrayList<List<Post>>();
+        listOfListOfPosts = new ArrayList<>();
 
         allCategories = new ArrayList<>();
 
@@ -107,13 +110,8 @@ public class ExploreFragment extends Fragment {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Issue with getting categories", e);
                     Toast.makeText(getContext(), "Issue with getting posts", Toast.LENGTH_SHORT).show();
                     return;
-                }
-
-                for (Post post : objects) {
-                    Log.i(TAG, "Post: " + post.getDescription());
                 }
 
                 listOfListOfPosts.add(objects);

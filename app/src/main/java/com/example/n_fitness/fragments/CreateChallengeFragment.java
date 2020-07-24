@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.n_fitness.models.ContactChip;
 import com.example.n_fitness.R;
 import com.example.n_fitness.models.Challenge;
+import com.example.n_fitness.models.ContactChip;
 import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -26,6 +26,9 @@ import com.pchmn.materialchips.ChipsInput;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment for adding friends to a challenge from the workout detail page
+ */
 public class CreateChallengeFragment extends DialogFragment {
 
     public static final String TAG = "CreateChallengeFragment";
@@ -55,7 +58,6 @@ public class CreateChallengeFragment extends DialogFragment {
         query();
         bundle = this.getArguments();
         post = bundle.getParcelable("post");
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_challenge, container, false);
     }
 

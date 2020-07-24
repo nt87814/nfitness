@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.example.n_fitness.models.Category;
 
 import java.util.ArrayList;
+
 /**
  * Adapter for displaying list of users when challenging friends from DetailsFragment
  */

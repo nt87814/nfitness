@@ -1,10 +1,10 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +24,9 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment for list of challenges the current user has
+ */
 public class ChallengesFragment extends Fragment {
 
     private static final String TAG = "PostsFragment";
@@ -67,14 +70,10 @@ public class ChallengesFragment extends Fragment {
             @Override
             public void done(List<Challenge> challenges, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Issue with getting challenges", e);
+                    Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                for (Challenge challenge : challenges) {
-                    Post post = challenge.getPost();
-                    Log.i(TAG, "Challenges: " + post.getDescription());
-                }
                 adapter.clear();
                 adapter.addAll(challenges);
             }

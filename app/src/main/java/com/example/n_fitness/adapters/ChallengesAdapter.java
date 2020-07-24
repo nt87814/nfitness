@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.MainActivity;
-import com.example.n_fitness.activities.MapActivity;
 import com.example.n_fitness.fragments.DetailsFragment;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;

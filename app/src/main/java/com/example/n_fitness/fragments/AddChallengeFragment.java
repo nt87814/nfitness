@@ -18,6 +18,9 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+/**
+ * Fragment for adding a workout to challenge list from the explore page
+ */
 public class AddChallengeFragment extends DialogFragment {
 
     private Button btnConfirm;

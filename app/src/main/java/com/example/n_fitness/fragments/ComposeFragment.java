@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,9 +162,6 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                     return;
                 }
 
-                for (Category category : categories) {
-                    Log.i(TAG, "Categories: " + category.getName());
-                }
                 allCategories.addAll(categories);
                 adapter.notifyDataSetChanged();
             }

@@ -2,7 +2,6 @@ package com.example.n_fitness.models;
 
 import android.location.Location;
 
-import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -11,6 +10,9 @@ import com.parse.ParseUser;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Model for workouts that have been challenged to a user
+ */
 @ParseClassName("Challenge")
 public class Challenge extends ParseObject {
     public static final String KEY_DEADLINE = "deadline";
@@ -64,10 +66,12 @@ public class Challenge extends ParseObject {
         put(KEY_COMPLETED, date1);
     }
 
-    public ParseGeoPoint getLocation() { return getParseGeoPoint(KEY_LOCATION); }
+    public ParseGeoPoint getLocation() {
+        return getParseGeoPoint(KEY_LOCATION);
+    }
 
     public void setLocation(Location location) {
-        if (location != null ) {
+        if (location != null) {
             ParseGeoPoint point = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
             put(KEY_LOCATION, point);
         }

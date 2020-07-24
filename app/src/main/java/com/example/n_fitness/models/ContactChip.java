@@ -6,6 +6,9 @@ import android.net.Uri;
 import com.parse.ParseUser;
 import com.pchmn.materialchips.model.ChipInterface;
 
+/**
+ * Model for users that are being selected in the create challenge fragment
+ */
 public class ContactChip implements ChipInterface {
 
     private String id;

@@ -17,6 +17,11 @@ import com.example.n_fitness.fragments.ExploreFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * Activity for bottom navigation view
+ * <p>
+ * This activity is used to open different fragments from the bottom navigation view
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";

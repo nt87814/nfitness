@@ -24,6 +24,9 @@ import com.example.n_fitness.models.Post;
 
 import static com.example.n_fitness.adapters.ChallengesAdapter.getTimeLeft;
 
+/**
+ * Fragment for viewing details on a challenge
+ */
 public class DetailsFragment extends Fragment {
 
     private static final String TAG = "DetailsFragment";

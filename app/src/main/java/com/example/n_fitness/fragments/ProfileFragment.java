@@ -44,6 +44,9 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Fragment for viewing current user's profile
+ */
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
@@ -128,14 +131,10 @@ public class ProfileFragment extends Fragment {
 
         query.findInBackground((challenges, e) -> {
             if (e != null) {
-                Log.e(TAG, "Issue with getting challenges", e);
+                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            for (Challenge challenge : challenges) {
-                Post post = challenge.getPost();
-                Log.i(TAG, "Challenges: " + post.getDescription());
-            }
             adapter.clear();
             adapter.addAll(challenges);
             tvTop.setText(getTopCategory());
@@ -235,8 +234,8 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    class MutableInt {
-        int value = 1; // note that we start at 1 since we're counting
+    static class MutableInt {
+        private int value = 1; // start at 1 since it's counting
 
         public void increment() {
             ++value;

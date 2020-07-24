@@ -1,7 +1,6 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,9 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
+/**
+ * Fragment for viewing other users' profiles
+ */
 public class UserFragment extends ProfileFragment {
 
     private static final String TAG = "UserFragment";
@@ -82,14 +84,9 @@ public class UserFragment extends ProfileFragment {
         query.findInBackground((challenges, e) -> {
             if (e != null) {
                 Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
-//                Log.e(TAG, "Issue with getting challenges", e);
                 return;
             }
 
-            for (Challenge challenge : challenges) {
-                Post post = challenge.getPost();
-                Log.i(TAG, "Challenges: " + post.getDescription());
-            }
             adapter.clear();
             adapter.addAll(challenges);
             tvTop.setText(getTopCategory());
