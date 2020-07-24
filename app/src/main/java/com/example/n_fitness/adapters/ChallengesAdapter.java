@@ -1,12 +1,16 @@
 package com.example.n_fitness.adapters;
 
+import android.Manifest;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,9 +20,13 @@ import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.MainActivity;
+import com.example.n_fitness.activities.MapActivity;
 import com.example.n_fitness.fragments.DetailsFragment;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +34,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import permissions.dispatcher.NeedsPermission;
+
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 /**
  * Adapter for timeline challenges
@@ -35,6 +47,8 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     private Context context;
     private List<Challenge> challenges;
     FragmentScreen fragmentScreen;
+    private Location mCurrentLocation;
+
 
     public enum FragmentScreen {
         HOME,
@@ -46,6 +60,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         this.context = context;
         this.challenges = challenges;
         fragmentScreen = fs;
+        getCurrentLocation();
     }
 
     @NonNull
@@ -104,7 +119,12 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                 @Override
                 public void onClose(SwipeLayout layout) {
                     //when the SurfaceView totally cover the BottomView.
-                    itemView.setOnClickListener(v);
+                    itemView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            itemView.setOnClickListener(v);
+                        }
+                    }, 500);
                 }
 
                 @Override
@@ -140,6 +160,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                     if (position != RecyclerView.NO_POSITION) {
                         Challenge challenge = challenges.get(position);
                         challenge.setCompleted();
+                        challenge.setLocation(mCurrentLocation);
                         challenge.saveInBackground();
                         challenges.remove(position);
                         notifyDataSetChanged();
@@ -242,5 +263,39 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         rString += simpleDateFormat.format(date).toUpperCase();
 
         return "Completed on " + rString;
+    }
+
+    @SuppressWarnings({"MissingPermission"})
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    public void getCurrentLocation() {
+        FusedLocationProviderClient locationClient = getFusedLocationProviderClient(context);
+        locationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            saveLocation(location);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("MapActivity", "Error trying to get last GPS location");
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    private void saveLocation(Location location) {
+        if (location == null) {
+            return;
+        }
+
+        mCurrentLocation = location;
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 }
