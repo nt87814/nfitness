@@ -76,13 +76,14 @@ public class DetailsFragment extends Fragment {
             Glide.with(getContext()).load(post.getImage().getUrl()).into(ivImage);
         }
         tvDescription.setText(post.getDescription());
-        tvTimestamp.setText(getTimeLeft(challenge.getDeadline().toString()));
 
         btnComplete = view.findViewById(R.id.btnComplete);
         fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString("screenFrom"));
         if (fragmentScreen == ChallengesAdapter.FragmentScreen.CURRENTPROFILE || fragmentScreen == ChallengesAdapter.FragmentScreen.USERPROFILE) {
             btnComplete.setVisibility(View.GONE);
+            tvTimestamp.setVisibility(View.GONE);
         } else {
+            tvTimestamp.setText(getTimeLeft(challenge.getDeadline().toString()));
             btnComplete.setOnClickListener(view12 -> {
                 challenge.setCompleted();
                 challenge.saveInBackground();
@@ -90,7 +91,6 @@ public class DetailsFragment extends Fragment {
             });
         }
         btnChallenge = view.findViewById(R.id.btnChallenge);
-
 
         btnChallenge.setOnClickListener(view1 -> {
             Challenge newChallenge = new Challenge();

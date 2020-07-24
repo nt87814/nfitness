@@ -1,4 +1,4 @@
-package com.example.n_fitness;
+package com.example.n_fitness.models;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;

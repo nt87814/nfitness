@@ -1,5 +1,6 @@
 package com.example.n_fitness.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -13,6 +14,7 @@ import com.example.n_fitness.R;
 import com.example.n_fitness.fragments.ChallengesFragment;
 import com.example.n_fitness.fragments.ComposeFragment;
 import com.example.n_fitness.fragments.ExploreFragment;
+import com.example.n_fitness.fragments.MapFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_explore:
                         fragment = new ExploreFragment();
+                        break;
+                    case R.id.action_map:
+                        fragment = new MapFragment();
                         break;
                     case R.id.action_profile:
                     default:

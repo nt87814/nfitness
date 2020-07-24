@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.n_fitness.ContactChip;
+import com.example.n_fitness.models.ContactChip;
 import com.example.n_fitness.R;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
