@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     protected List<Challenge> completedChallenges;
     protected ChallengesAdapter adapter;
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
 
 
     protected ImageView ivProfileImage;
@@ -64,7 +64,7 @@ public class ProfileFragment extends Fragment {
     protected TextView tvTopLabel;
 
     private File photoFile;
-    public String photoFileName = "photo.jpg";
+    private static final String photoFileName = "photo.jpg";
 
     public ProfileFragment() {
         // Required empty public constructor
