@@ -14,12 +14,12 @@ import com.example.n_fitness.models.Category;
 import java.util.ArrayList;
 
 /**
- * Adapter for displaying list of users when challenging friends from DetailsFragment
+ * Adapter for displaying list of categories when creating a new post
  */
 public class SpinAdapter extends ArrayAdapter<Category> {
 
     private Context context;
-    ArrayList<Category> categories;
+    private ArrayList<Category> categories;
 
     public SpinAdapter(@NonNull Context context, int resource, ArrayList<Category> values) {
         super(context, resource);

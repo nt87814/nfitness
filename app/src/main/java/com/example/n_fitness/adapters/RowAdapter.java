@@ -30,7 +30,7 @@ import java.util.List;
 public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
 
     private List<Post> mPosts;
-    Context mContext;
+    private Context mContext;
 
     public RowAdapter(Context context, List<Post> objects) {
         this.mContext = context;
@@ -59,10 +59,10 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView ivPost;
-        public TextView tvTitle;
-        public View rootView;
-        public MaterialCardView card;
+        private ImageView ivPost;
+        private TextView tvTitle;
+        private View rootView;
+        private MaterialCardView card;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

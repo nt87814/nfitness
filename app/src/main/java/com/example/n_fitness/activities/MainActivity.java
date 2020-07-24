@@ -24,7 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
     private BottomNavigationView bottomNavigationView;
 
 

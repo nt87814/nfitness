@@ -46,7 +46,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
     private Context context;
     private List<Challenge> challenges;
-    FragmentScreen fragmentScreen;
+    private FragmentScreen fragmentScreen;
     private Location mCurrentLocation;
 
 
