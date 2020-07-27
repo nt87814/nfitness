@@ -82,8 +82,6 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Challenge newChallenge = new Challenge();
-                    newChallenge.setPost(post);
                     FragmentManager fm = ((AppCompatActivity) mContext).getSupportFragmentManager();
                     AddChallengeFragment addChallengeDialogFragment = AddChallengeFragment.newInstance("Add to my Challenges?");
                     Bundle bundle = new Bundle();

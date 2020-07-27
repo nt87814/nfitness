@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +18,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.n_fitness.R;
+import com.example.n_fitness.adapters.CustomWindowAdapter;
+import com.example.n_fitness.fragments.AddChallengeFragment;
+import com.example.n_fitness.models.Category;
+import com.example.n_fitness.models.Challenge;
+import com.example.n_fitness.models.Post;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,6 +47,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -60,6 +71,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     private Location mCurrentLocation;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
+    private ArrayList<Challenge> recentChallenges;
 
     private final static String KEY_LOCATION = "location";
 
@@ -84,18 +96,67 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
 
+        recentChallenges = new ArrayList<>();
+
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap map) {
                     loadMap(map);
+                    map.setInfoWindowAdapter(new CustomWindowAdapter(getLayoutInflater(), getApplicationContext()));
+                    map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                            FragmentManager fm = getSupportFragmentManager();                //TODO: redundant code
+                            AddChallengeFragment addChallengeDialogFragment = AddChallengeFragment.newInstance("Add to my Challenges?");
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("post", (Parcelable) marker.getTag());
+                            addChallengeDialogFragment.setArguments(bundle);
+                            addChallengeDialogFragment.show(fm, "fragment_add_challenge");
+                        }
+                    });
                 }
             });
         } else {
             Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void queryRecentChallenges() {
+        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
+        query.include(Challenge.KEY_FROM);
+        query.include(Challenge.KEY_REC);
+        query.include(Challenge.KEY_POST);
+        query.include(Challenge.KEY_COMPLETED);
+        query.include(Challenge.KEY_LOCATION);
+        query.include(Post.KEY_CATEGORY);
+        query.include(Category.KEY_NAME);
+        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
+        query.setLimit(20);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
+
+        query.findInBackground((challenges, e) -> {
+            if (e != null) {
+                Toast.makeText(this, "Issue with getting challenges", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            BitmapDescriptor defaultMarker =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);   //TODO: redundant code
+            for (Challenge c: challenges) {
+                if (c.getLocation() != null) {
+                    Marker marker = map.addMarker(new MarkerOptions()
+                            .position(c.getLocation())
+                            .title(c.getPost().getDescription())
+    //                        .snippet(snippet)
+                            .icon(defaultMarker));
+                    marker.setTag(c.getPost());
+                    recentChallenges.add(c);
+                }
+            }
+        });
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -107,6 +168,14 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             map.setOnMapLongClickListener(this);
             MapActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             MapActivityPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+            queryRecentChallenges();
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                public boolean onMarkerClick(Marker marker) {
+                    // Handle marker click here
+                    return false;
+                }
+            });
+
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }

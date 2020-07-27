@@ -3,6 +3,8 @@ package com.example.n_fitness.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import com.example.n_fitness.fragments.ComposeFragment;
 import com.example.n_fitness.fragments.ExploreFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Activity for bottom navigation view
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private BottomNavigationView bottomNavigationView;
+    private FloatingActionButton btnCreate;
 
 
     @Override
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
+        btnCreate = findViewById(R.id.btnCreate);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
                         fragment = new ChallengesFragment();
-                        break;
-                    case R.id.action_compose:
-                        fragment = new ComposeFragment();
                         break;
                     case R.id.action_explore:
                         fragment = new ExploreFragment();
@@ -66,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
         });
         // Set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_home);
+
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ComposeFragment();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+            }
+        });
     }
 
     public void loadFragment(int id, Fragment fragment) {

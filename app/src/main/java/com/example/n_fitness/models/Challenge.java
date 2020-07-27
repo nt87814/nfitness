@@ -2,6 +2,7 @@ package com.example.n_fitness.models;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -66,8 +67,13 @@ public class Challenge extends ParseObject {
         put(KEY_COMPLETED, date1);
     }
 
-    public ParseGeoPoint getLocation() {
-        return getParseGeoPoint(KEY_LOCATION);
+    public LatLng getLocation() {
+        ParseGeoPoint parseGeoPoint = getParseGeoPoint(KEY_LOCATION);
+        LatLng point = null;
+        if (parseGeoPoint != null) {
+            point = new LatLng(parseGeoPoint.getLatitude(), parseGeoPoint.getLongitude());
+        }
+        return point;
     }
 
     public void setLocation(Location location) {
