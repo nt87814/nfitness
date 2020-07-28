@@ -21,6 +21,10 @@ import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 import static com.example.n_fitness.adapters.ChallengesAdapter.getTimeLeft;
 
@@ -79,6 +83,7 @@ public class DetailsFragment extends Fragment {
             Glide.with(getContext()).load(post.getImage().getUrl()).into(ivImage);
         }
         tvDescription.setText(post.getDescription());
+        setTvLikes();
 
         btnComplete = view.findViewById(R.id.btnComplete);
         fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString("screenFrom"));
@@ -110,6 +115,21 @@ public class DetailsFragment extends Fragment {
         ivProfileImage.setOnClickListener(view14 -> goUserFragment());
 
         tvUsername.setOnClickListener(view13 -> goUserFragment());
+
+        btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                post.addLike(ParseUser.getCurrentUser());
+                post.saveInBackground();
+                setTvLikes();
+                setActiveHeart();
+            }
+        });
+
+        if (post.getLikes() != null && listHasUserLike(post.getLikes(), ParseUser.getCurrentUser())) {
+            setActiveHeart();
+        }
+
     }
 
     private void goUserFragment() {
@@ -127,6 +147,30 @@ public class DetailsFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) getContext();
             mainActivity.loadFragment(id, fragment);
         }
+    }
 
+    //TODO: better name
+    public static boolean listHasUserLike(ArrayList<ParseUser> list, ParseUser parseUser) {
+        for (ParseUser user: list) {
+            if ( user.getUsername().equals(parseUser.getUsername())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void setTvLikes() {
+        if (post.getLikes() != null) {
+            int numLikes = post.getLikes().size();
+            if (numLikes == 1) {
+                tvLikes.setText(1 + " like");
+            } else {
+                tvLikes.setText(numLikes + " likes");
+            }
+        }
+    }
+
+    private void setActiveHeart() {
+        btnLike.setImageResource(R.drawable.ufi_heart_active);
     }
 }

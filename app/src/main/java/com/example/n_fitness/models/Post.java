@@ -1,9 +1,20 @@
 package com.example.n_fitness.models;
 
+import android.provider.ContactsContract;
+import android.util.Log;
+
+import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Model to represent workouts
@@ -50,4 +61,25 @@ public class Post extends ParseObject {
     public void setCategory(Category category) {
         put(KEY_CATEGORY, category);
     }
+
+    public ArrayList<ParseUser> getLikes() {
+        ArrayList<ParseUser> userlikes = new ArrayList<>();
+        ParseRelation likes = getRelation(KEY_LIKES);
+        ParseQuery queryLikes = likes.getQuery();
+//        queryLikes.include("username");
+        try {
+            userlikes = (ArrayList<ParseUser>) queryLikes.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return userlikes;
+    }
+
+    public void addLike(ParseUser user) {
+        ParseRelation likes = getRelation(KEY_LIKES);
+        likes.add(user);
+    }
+
+
 }
