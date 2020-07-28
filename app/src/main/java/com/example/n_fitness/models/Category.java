@@ -10,6 +10,7 @@ import com.parse.ParseObject;
 public class Category extends ParseObject {
     public static final String KEY_NAME = "name";
 
+
     public String getName() {
         return (String) get(KEY_NAME);
     }

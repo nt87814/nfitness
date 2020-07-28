@@ -75,6 +75,7 @@ public class ExploreFragment extends Fragment {
             }
         });
         queryCategories();
+        queryPopularPosts();
     }
 
     private void queryCategories() {
@@ -116,6 +117,21 @@ public class ExploreFragment extends Fragment {
 
                 listOfListOfPosts.add(objects);
                 mainAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void queryPopularPosts() {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.include(Post.KEY_IMAGE);
+        query.include(Post.KEY_DESCRIPTION);
+        query.include(Post.KEY_LIKES);
+        query.orderByDescending(Post.KEY_NUM_LIKES);
+        query.setLimit(10);
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                listOfListOfPosts.add(0, objects);
             }
         });
     }

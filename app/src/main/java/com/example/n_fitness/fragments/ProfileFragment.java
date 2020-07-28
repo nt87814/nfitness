@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
         query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
         query.setLimit(20);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.addDescendingOrder(Challenge.KEY_COMPLETED);
 
         query.findInBackground((challenges, e) -> {
             if (e != null) {

@@ -20,8 +20,8 @@ public class Post extends ParseObject {
     public static final String KEY_USER = "user";
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_LIKES = "likes";
-    public static final String KEY_DEADLINE = "deadline";
     public static final String KEY_CATEGORY = "category";
+    public static final String KEY_NUM_LIKES = "numLikes";
 
 
     public String getDescription() {
@@ -72,7 +72,10 @@ public class Post extends ParseObject {
     public void addLike(ParseUser user) {
         ParseRelation likes = getRelation(KEY_LIKES);
         likes.add(user);
+        int newNumLikes = getNumLikes() + 1;
+        put(KEY_NUM_LIKES, newNumLikes);
     }
 
+    public int getNumLikes() { return getInt(KEY_NUM_LIKES); }
 
 }

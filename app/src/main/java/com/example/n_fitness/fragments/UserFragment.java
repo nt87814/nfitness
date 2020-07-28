@@ -79,7 +79,7 @@ public class UserFragment extends ProfileFragment {
         query.whereEqualTo(Challenge.KEY_REC, user);
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
         query.setLimit(20);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.addDescendingOrder(Challenge.KEY_COMPLETED);
 
         query.findInBackground((challenges, e) -> {
             if (e != null) {

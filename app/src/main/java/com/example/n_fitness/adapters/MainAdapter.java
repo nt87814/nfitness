@@ -49,7 +49,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.rvRow.setHasFixedSize(true); //?
         RowAdapter rowsAdapter = new RowAdapter(context, rowPosts);
         holder.rvRow.setAdapter(rowsAdapter);
-        holder.tvRowTitle.setText(categories.get(position).getName());
+        if (position == 0) {
+            //popular workouts
+            holder.tvRowTitle.setText("Popular");
+        }
+
+        else {
+            holder.tvRowTitle.setText(categories.get(position - 1).getName());
+        }
 
         final RecyclerView finalRecyclerView = holder.rvRow;
         finalRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
