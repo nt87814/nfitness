@@ -66,7 +66,6 @@ public class Post extends ParseObject {
         ArrayList<ParseUser> userlikes = new ArrayList<>();
         ParseRelation likes = getRelation(KEY_LIKES);
         ParseQuery queryLikes = likes.getQuery();
-//        queryLikes.include("username");
         try {
             userlikes = (ArrayList<ParseUser>) queryLikes.find();
         } catch (ParseException e) {

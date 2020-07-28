@@ -1,8 +1,11 @@
 package com.example.n_fitness.fragments;
 
+import android.gesture.Gesture;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -84,6 +87,7 @@ public class DetailsFragment extends Fragment {
         }
         tvDescription.setText(post.getDescription());
         setTvLikes();
+        setActiveHeart();
 
         btnComplete = view.findViewById(R.id.btnComplete);
         fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString("screenFrom"));
@@ -119,16 +123,25 @@ public class DetailsFragment extends Fragment {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                post.addLike(ParseUser.getCurrentUser());
-                post.saveInBackground();
-                setTvLikes();
-                setActiveHeart();
+                likePost();
             }
         });
 
-        if (post.getLikes() != null && listHasUserLike(post.getLikes(), ParseUser.getCurrentUser())) {
-            setActiveHeart();
-        }
+        ivImage.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    likePost();
+                    return super.onDoubleTap(e);
+                }
+            });
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
 
     }
 
@@ -171,6 +184,15 @@ public class DetailsFragment extends Fragment {
     }
 
     private void setActiveHeart() {
-        btnLike.setImageResource(R.drawable.ufi_heart_active);
+        if (post.getLikes() != null && listHasUserLike(post.getLikes(), ParseUser.getCurrentUser())) {
+            btnLike.setImageResource(R.drawable.ufi_heart_active);
+        }
+    }
+
+    private void likePost() {
+        post.addLike(ParseUser.getCurrentUser());
+        post.saveInBackground();
+        setTvLikes();
+        setActiveHeart();
     }
 }
