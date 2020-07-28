@@ -23,8 +23,8 @@ public class SpinAdapter extends ArrayAdapter<Category> {
 
     public SpinAdapter(@NonNull Context context, int resource, ArrayList<Category> values) {
         super(context, resource);
-        this.context = context;
-        this.categories = values;
+        SpinAdapter.context = context;
+        categories = values;
     }
 
     @Override

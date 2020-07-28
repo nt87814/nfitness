@@ -1,6 +1,5 @@
 package com.example.n_fitness.fragments;
 
-import android.gesture.Gesture;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -15,16 +14,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
-import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -34,7 +30,7 @@ import static com.example.n_fitness.adapters.ChallengesAdapter.getTimeLeft;
 /**
  * Fragment for viewing details on a challenge
  */
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends GenericFragment {
 
     private static final String TAG = "DetailsFragment";
 
@@ -153,19 +149,9 @@ public class DetailsFragment extends Fragment {
         switchFragment(R.id.flContainer, userFragment);
     }
 
-    public void switchFragment(int id, Fragment fragment) {
-        if (getContext() == null)
-            return;
-        if (getContext() instanceof MainActivity) {
-            MainActivity mainActivity = (MainActivity) getContext();
-            mainActivity.loadFragment(id, fragment);
-        }
-    }
-
-    //TODO: better name
     public static boolean listHasUserLike(ArrayList<ParseUser> list, ParseUser parseUser) {
-        for (ParseUser user: list) {
-            if ( user.getUsername().equals(parseUser.getUsername())) {
+        for (ParseUser user : list) {
+            if (user.getUsername().equals(parseUser.getUsername())) {
                 return true;
             }
         }

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.fragments.AddChallengeFragment;
-import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.google.android.material.card.MaterialCardView;
 import com.parse.ParseFile;
@@ -33,8 +32,8 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
     private static List<Post> mPosts;
 
     public RowAdapter(Context context, List<Post> objects) {
-        this.mContext = context;
-        this.mPosts = objects;
+        mContext = context;
+        mPosts = objects;
     }
 
     @NonNull

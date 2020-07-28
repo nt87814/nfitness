@@ -1,10 +1,5 @@
 package com.example.n_fitness.models;
 
-import android.provider.ContactsContract;
-import android.util.Log;
-
-import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -14,7 +9,6 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Model to represent workouts

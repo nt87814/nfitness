@@ -57,8 +57,8 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     }
 
     public ChallengesAdapter(Context context, List<Challenge> challenges, FragmentScreen fs) {
-        this.context = context;
-        this.challenges = challenges;
+        ChallengesAdapter.context = context;
+        ChallengesAdapter.challenges = challenges;
         fragmentScreen = fs;
         getCurrentLocation();
     }
@@ -116,7 +116,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             ll_surface_view = itemView.findViewById(R.id.ll_surface_view);
 
             ll_surface_view.setOnClickListener(view -> {
-                if(swipeLayout.getOpenStatus() == SwipeLayout.Status.Close){
+                if (swipeLayout.getOpenStatus() == SwipeLayout.Status.Close) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Challenge challenge = challenges.get(position);
@@ -289,8 +289,8 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
         mCurrentLocation = location;
         String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
+                location.getLatitude() + "," +
+                location.getLongitude();
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 }

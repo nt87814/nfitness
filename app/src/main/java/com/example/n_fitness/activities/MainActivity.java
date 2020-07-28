@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,9 +27,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private BottomNavigationView bottomNavigationView;
-    private FloatingActionButton btnCreate;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        btnCreate = findViewById(R.id.btnCreate);
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        FloatingActionButton btnCreate = findViewById(R.id.btnCreate);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

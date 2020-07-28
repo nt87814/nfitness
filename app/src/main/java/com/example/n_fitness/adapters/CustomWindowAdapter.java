@@ -1,17 +1,11 @@
 package com.example.n_fitness.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import com.example.n_fitness.R;
-import com.example.n_fitness.fragments.AddChallengeFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -21,7 +15,7 @@ public class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
     Context mContext;
     Marker cMarker;
 
-    public CustomWindowAdapter(LayoutInflater i, Context context){
+    public CustomWindowAdapter(LayoutInflater i, Context context) {
         mInflater = i;
         mContext = context;
     }

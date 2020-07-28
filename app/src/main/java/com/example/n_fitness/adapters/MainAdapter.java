@@ -27,9 +27,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private static List<Category> categories;
 
     public MainAdapter(Context context, List<List<Post>> objects, List<Category> categories) {
-        this.context = context;
+        MainAdapter.context = context;
         mRows = objects;
-        this.categories = categories;
+        MainAdapter.categories = categories;
     }
 
     @NonNull

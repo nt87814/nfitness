@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -48,7 +47,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -65,12 +63,11 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 @RuntimePermissions
 public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLongClickListener {
 
-    private SupportMapFragment mapFragment;
     private GoogleMap map;
-    private LocationRequest mLocationRequest;
-    private Location mCurrentLocation;
-    private long UPDATE_INTERVAL = 60000;  /* 60 secs */
-    private long FASTEST_INTERVAL = 5000; /* 5 secs */
+    private LocationRequest locationRequest;
+    private Location currentLocation;
+    private final long UPDATE_INTERVAL = 60000;  /* 60 secs */
+    private final long FASTEST_INTERVAL = 5000; /* 5 secs */
     private ArrayList<Challenge> recentChallenges;
 
     private final static String KEY_LOCATION = "location";
@@ -93,12 +90,12 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         if (savedInstanceState != null && savedInstanceState.keySet().contains(KEY_LOCATION)) {
             // Since KEY_LOCATION was found in the Bundle, we can be sure that mCurrentLocation
             // is not null.
-            mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            currentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
 
         recentChallenges = new ArrayList<>();
 
-        mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
+        SupportMapFragment mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -109,7 +106,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                         @Override
                         public void onInfoWindowClick(Marker marker) {
                             FragmentManager fm = getSupportFragmentManager();                //TODO: redundant code
-                            AddChallengeFragment addChallengeDialogFragment = AddChallengeFragment.newInstance("Add to my Challenges?");
+                            AddChallengeFragment addChallengeDialogFragment = new AddChallengeFragment();
                             Bundle bundle = new Bundle();
                             bundle.putParcelable("post", (Parcelable) marker.getTag());
                             addChallengeDialogFragment.setArguments(bundle);
@@ -145,12 +142,11 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
 
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);   //TODO: redundant code
-            for (Challenge c: challenges) {
+            for (Challenge c : challenges) {
                 if (c.getLocation() != null) {
                     Marker marker = map.addMarker(new MarkerOptions()
                             .position(c.getLocation())
                             .title(c.getPost().getDescription())
-    //                        .snippet(snippet)
                             .icon(defaultMarker));
                     marker.setTag(c.getPost());
                     recentChallenges.add(c);
@@ -162,9 +158,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
-            // Map is ready
-            Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
-            // Attach long click listener to the map here
             map.setOnMapLongClickListener(this);
             MapActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             MapActivityPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
@@ -206,26 +199,9 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("MapActivity", "Error trying to get last GPS location");
-                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error trying to get last GPS location", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    /*
-     * Called when the Activity becomes visible.
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    /*
-     * Called when the Activity is no longer visible.
-     */
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     private boolean isGooglePlayServicesAvailable() {
@@ -258,9 +234,8 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
 
         // Display the connection status
 
-        if (mCurrentLocation != null) {
-            Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        if (currentLocation != null) {
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
             map.animateCamera(cameraUpdate);
         } else {
@@ -271,19 +246,19 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     protected void startLocationUpdates() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setInterval(UPDATE_INTERVAL);
+        locationRequest.setFastestInterval(FASTEST_INTERVAL);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
+        builder.addLocationRequest(locationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
 
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
         //noinspection MissingPermission
-        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+        getFusedLocationProviderClient(this).requestLocationUpdates(locationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         onLocationChanged(locationResult.getLastLocation());
@@ -298,24 +273,16 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             return;
         }
 
-        // Report to the UI that the location was updated
-
-        mCurrentLocation = location;
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        currentLocation = location;
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
+        savedInstanceState.putParcelable(KEY_LOCATION, currentLocation);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
     public void onMapLongClick(LatLng point) {
-        Toast.makeText(this, "Long Press", Toast.LENGTH_LONG).show();
-        // Display the alert dialog
         showAlertDialogForPoint(point);
     }
 
