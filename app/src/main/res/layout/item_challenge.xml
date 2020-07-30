@@ -19,6 +19,8 @@
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             android:clickable="true"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
             android:text="Complete" />
 
     </LinearLayout>
@@ -57,6 +59,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_toEndOf="@+id/ivImage"
+                android:textStyle="bold"
                 tools:text="2d left" />
 
             <TextView

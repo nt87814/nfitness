@@ -51,28 +51,20 @@
         tools:text="username" />
 
     <TextView
-        android:id="@+id/tvStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfileImage"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="20dp"
-        android:text="Stats: " />
-
-    <TextView
         android:id="@+id/tvTopLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvStats"
+        android:layout_below="@id/btnLogout"
         android:layout_marginLeft="20dp"
+        android:textStyle="bold"
         android:text="Top Category: " />
 
     <TextView
         android:id="@+id/tvTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvStats"
-        android:layout_toEndOf="@+id/tvTopLabel"
+        android:layout_below="@id/btnLogout"
+        android:layout_toEndOf="@id/tvTopLabel"
         tools:text="category" />
 
     <androidx.recyclerview.widget.RecyclerView
