@@ -33,26 +33,21 @@ public class CreateChallengeFragment extends DialogFragment {
     private static final String TAG = "CreateChallengeFragment";
     private List<ContactChip> contactList;
     private ChipsInput chipsInput;
-    private Button btnConfirm;
     private Post post;
-
-    private Bundle bundle;
-
 
     public CreateChallengeFragment() {
         // Empty constructor is required for DialogFragment
     }
 
     public static CreateChallengeFragment newInstance() {
-        CreateChallengeFragment frag = new CreateChallengeFragment();
-        return frag;
+        return new CreateChallengeFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         query();
-        bundle = this.getArguments();
+        Bundle bundle = this.getArguments();
         post = bundle.getParcelable("post");
         return inflater.inflate(R.layout.fragment_create_challenge, container, false);
     }
@@ -61,7 +56,7 @@ public class CreateChallengeFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         chipsInput = view.findViewById(R.id.chipsInput);
-        btnConfirm = view.findViewById(R.id.btnConfirm);
+        Button btnConfirm = view.findViewById(R.id.btnConfirm);
         contactList = new ArrayList<>();
         chipsInput.setFilterableList(contactList);
 

@@ -60,12 +60,10 @@ public class ExploreRowAdapter extends RecyclerView.Adapter<ExploreRowAdapter.Vi
 
         private ImageView ivPost;
         private TextView tvTitle;
-        private View rootView;
         private MaterialCardView card;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            rootView = itemView;
             ivPost = (ImageView) itemView.findViewById(R.id.ivPost);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             card = itemView.findViewById(R.id.card);

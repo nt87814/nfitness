@@ -20,7 +20,6 @@ public class Challenge extends ParseObject {
     public static final String KEY_POST = "post";
     public static final String KEY_FROM = "from";
     public static final String KEY_REC = "recipient";
-    public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_COMPLETED = "completed";
     public static final String KEY_LOCATION = "latlng";
 

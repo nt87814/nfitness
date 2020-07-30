@@ -47,15 +47,10 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
 
     private EditText etDescription;
     private ImageView ivPostImage;
-    private Button btnSubmit;
-    private Button btnGetImage;
-    private Spinner spinner;
     private ArrayList<Category> allCategories;
     private Category selectedCategory;
 
-    private ParseFile photoFile;
     private static final String PHOTO_FILE_NAME = "photo.jpg";
-    private Uri imageUri;
     private CategorySpinAdapter adapter;
 
 
@@ -74,9 +69,9 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
         super.onViewCreated(view, savedInstanceState);
         etDescription = view.findViewById(R.id.etDescription);
         ivPostImage = view.findViewById(R.id.ivPostImage);
-        btnSubmit = view.findViewById(R.id.btnSubmit);
-        btnGetImage = view.findViewById(R.id.btnGetImage);
-        spinner = view.findViewById(R.id.sCategories);
+        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        Button btnGetImage = view.findViewById(R.id.btnGetImage);
+        Spinner spinner = view.findViewById(R.id.sCategories);
         spinner.setOnItemSelectedListener(this);
 
         btnSubmit.setOnClickListener(view1 -> {
@@ -131,7 +126,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         imageToBeSent.compress(Bitmap.CompressFormat.PNG, 5, stream);
         byte[] imageRec = stream.toByteArray();
-        photoFile = new ParseFile(PHOTO_FILE_NAME, imageRec);
+        ParseFile photoFile = new ParseFile(PHOTO_FILE_NAME, imageRec);
 
         if (selectedCategory == null) {
             Toast.makeText(getContext(), "Please select a category!", Toast.LENGTH_SHORT).show();
@@ -191,7 +186,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
                 Toast.makeText(getContext(), "Error getting image!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            imageUri = data.getData();
+            Uri imageUri = data.getData();
             Glide.with(getContext()).load(imageUri).into(ivPostImage);
         }
     }

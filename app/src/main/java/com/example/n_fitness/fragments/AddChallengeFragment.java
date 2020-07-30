@@ -23,8 +23,6 @@ import com.parse.SaveCallback;
  */
 public class AddChallengeFragment extends DialogFragment {
 
-    private Button btnConfirm;
-    private Bundle bundle;
     private Post post;
 
     public AddChallengeFragment() {
@@ -34,7 +32,7 @@ public class AddChallengeFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        bundle = this.getArguments();
+        Bundle bundle = this.getArguments();
         post = bundle.getParcelable("post");
         return inflater.inflate(R.layout.fragment_add_challenge, container, false);
     }
@@ -42,7 +40,7 @@ public class AddChallengeFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnConfirm = view.findViewById(R.id.btnConfirm);
+        Button btnConfirm = view.findViewById(R.id.btnConfirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

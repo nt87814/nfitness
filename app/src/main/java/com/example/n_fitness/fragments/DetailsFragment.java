@@ -36,17 +36,9 @@ public class DetailsFragment extends GenericFragment {
     private Bundle bundle;
     private Challenge challenge;
     private Post post;
-    private ChallengesAdapter.FragmentScreen fragmentScreen;
 
-    private ImageView ivProfileImage;
-    private TextView tvUsername;
     private ImageButton btnLike;
     private TextView tvLikes;
-    private ImageView ivImage;
-    private TextView tvDescription;
-    private TextView tvTimestamp;
-    private Button btnComplete;
-    private Button btnChallenge;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -62,17 +54,17 @@ public class DetailsFragment extends GenericFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ivProfileImage = view.findViewById(R.id.ivProfileImage);
-        tvUsername = view.findViewById(R.id.tvUsername);
         btnLike = view.findViewById(R.id.btnLike);
         tvLikes = view.findViewById(R.id.tvLikes);
-        ivImage = view.findViewById(R.id.ivImage);
-        tvDescription = view.findViewById(R.id.tvDescription);
-        tvTimestamp = view.findViewById(R.id.tvTimestamp);
-        btnComplete = view.findViewById(R.id.btnComplete);
-        btnChallenge = view.findViewById(R.id.btnChallenge);
+        ImageView ivProfileImage = view.findViewById(R.id.ivProfileImage);
+        TextView tvUsername = view.findViewById(R.id.tvUsername);
+        ImageView ivImage = view.findViewById(R.id.ivImage);
+        TextView tvDescription = view.findViewById(R.id.tvDescription);
+        TextView tvTimestamp = view.findViewById(R.id.tvTimestamp);
+        Button btnComplete = view.findViewById(R.id.btnComplete);
+        Button btnChallenge = view.findViewById(R.id.btnChallenge);
 
-        fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString(getContext().getResources().getString(R.string.screenFrom)));
+        ChallengesAdapter.FragmentScreen fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString(getContext().getResources().getString(R.string.screenFrom)));
         switch (fragmentScreen) {
             case PROFILE:
                 btnComplete.setVisibility(View.GONE);
@@ -112,9 +104,6 @@ public class DetailsFragment extends GenericFragment {
         tvDescription.setText(post.getDescription());
         setTvLikes();
         setActiveHeart();
-
-        btnComplete = view.findViewById(R.id.btnComplete);
-        btnChallenge = view.findViewById(R.id.btnChallenge);
 
         btnChallenge.setOnClickListener(view1 -> {
             Challenge newChallenge = new Challenge();

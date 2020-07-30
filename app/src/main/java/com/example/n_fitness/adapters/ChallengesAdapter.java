@@ -97,9 +97,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         private TextView tvDeadline;
         private TextView tvDescription;
         private TextView tvFrom;
-        private TextView tvComplete;
         private SwipeLayout swipeLayout;
-        private LinearLayout ll_surface_view;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -112,8 +110,8 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             tvDeadline = itemView.findViewById(R.id.tvDeadline);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvFrom = itemView.findViewById(R.id.tvFrom);
-            tvComplete = itemView.findViewById(R.id.tvComplete);
-            ll_surface_view = itemView.findViewById(R.id.ll_surface_view);
+            TextView tvComplete = itemView.findViewById(R.id.tvComplete);
+            LinearLayout ll_surface_view = itemView.findViewById(R.id.ll_surface_view);
 
             tvFrom.setOnClickListener(new View.OnClickListener() {
                 @Override

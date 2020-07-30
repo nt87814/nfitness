@@ -30,10 +30,7 @@ public class ExploreFragment extends Fragment {
 
     private static final String TAG = "ExploreFragment";
 
-    private RecyclerView rvRootView;
-    private RecyclerView.Adapter adapter;
     private ExploreMainAdapter mainAdapter;
-    private LinearLayoutManager layoutManager;
     private List<Category> allCategories;
     List<List<Post>> listOfListOfPosts;
 
@@ -51,8 +48,8 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvRootView = view.findViewById(R.id.rvRootView);
-        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView rvRootView = view.findViewById(R.id.rvRootView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvRootView.setLayoutManager(layoutManager);
         rvRootView.setHasFixedSize(true);
 
