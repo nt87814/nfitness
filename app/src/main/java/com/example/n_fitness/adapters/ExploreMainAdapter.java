@@ -20,16 +20,16 @@ import java.util.List;
 /**
  * Adapter for List of rows in the explore page for viewing all posts (workouts) by category
  */
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
+public class ExploreMainAdapter extends RecyclerView.Adapter<ExploreMainAdapter.ViewHolder> {
 
-    private static Context context;
-    private static List<List<Post>> mRows;
-    private static List<Category> categories;
+    private Context context;
+    private List<List<Post>> rows;
+    private List<Category> categories;
 
-    public MainAdapter(Context context, List<List<Post>> objects, List<Category> categories) {
-        MainAdapter.context = context;
-        mRows = objects;
-        MainAdapter.categories = categories;
+    public ExploreMainAdapter(Context context, List<List<Post>> objects, List<Category> categories) {
+        this.context = context;
+        rows = objects;
+        this.categories = categories;
     }
 
     @NonNull
@@ -43,38 +43,24 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        List<Post> rowPosts = mRows.get(position);
+        List<Post> rowPosts = rows.get(position);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.rvRow.setLayoutManager(layoutManager);
-        holder.rvRow.setHasFixedSize(true); //?
-        RowAdapter rowsAdapter = new RowAdapter(context, rowPosts);
+        holder.rvRow.setHasFixedSize(true);
+        ExploreRowAdapter rowsAdapter = new ExploreRowAdapter(context, rowPosts);
         holder.rvRow.setAdapter(rowsAdapter);
         if (position == 0) {
             //popular workouts
             holder.tvRowTitle.setText("Popular");
-        }
-
-        else {
+        } else {
             holder.tvRowTitle.setText(categories.get(position - 1).getName());
         }
 
-        final RecyclerView finalRecyclerView = holder.rvRow;
-        finalRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return mRows.size();
+        return rows.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

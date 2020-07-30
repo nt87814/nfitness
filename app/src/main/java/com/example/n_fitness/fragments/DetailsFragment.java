@@ -1,7 +1,6 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -73,11 +72,40 @@ public class DetailsFragment extends GenericFragment {
         btnComplete = view.findViewById(R.id.btnComplete);
         btnChallenge = view.findViewById(R.id.btnChallenge);
 
-        challenge = bundle.getParcelable("challenge");
-        post = bundle.getParcelable("post");
-        Log.d(TAG, challenge.getFrom().getUsername());
-        Glide.with(getContext()).load(challenge.getFrom().getParseFile("image").getUrl()).into(ivProfileImage);
-        tvUsername.setText(challenge.getFrom().getUsername());
+        fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString(getContext().getResources().getString(R.string.screenFrom)));
+        switch (fragmentScreen) {
+            case PROFILE:
+                btnComplete.setVisibility(View.GONE);
+                tvTimestamp.setVisibility(View.GONE);
+                challenge = bundle.getParcelable(getContext().getResources().getString(R.string.challenge));
+                post = challenge.getPost();
+                Glide.with(getContext()).load(challenge.getFrom().getParseFile("image").getUrl()).into(ivProfileImage);
+                tvUsername.setText(challenge.getFrom().getUsername());
+                ivProfileImage.setOnClickListener(view14 -> goUserFragment(challenge.getFrom()));
+                tvUsername.setOnClickListener(view13 -> goUserFragment(challenge.getFrom()));
+                break;
+            case HOME:
+                challenge = bundle.getParcelable(getContext().getResources().getString(R.string.challenge));
+                post = challenge.getPost();
+                tvTimestamp.setText(getTimeLeft(challenge.getDeadline().toString()));
+                Glide.with(getContext()).load(challenge.getFrom().getParseFile("image").getUrl()).into(ivProfileImage);
+                tvUsername.setText(challenge.getFrom().getUsername());
+                ivProfileImage.setOnClickListener(view14 -> goUserFragment(challenge.getFrom()));
+                tvUsername.setOnClickListener(view13 -> goUserFragment(challenge.getFrom()));
+                btnComplete.setOnClickListener(view12 -> {
+                    challenge.setCompleted();
+                    challenge.saveInBackground();
+                });
+                break;
+            case COMPOSE:
+                btnComplete.setVisibility(View.GONE);
+                tvTimestamp.setVisibility(View.GONE);
+                tvUsername.setVisibility(View.GONE);
+                ivProfileImage.setVisibility(View.GONE);
+                post = bundle.getParcelable(getContext().getResources().getString(R.string.post));
+                break;
+        }
+
         if (post.getImage() != null) {
             Glide.with(getContext()).load(post.getImage().getUrl()).into(ivImage);
         }
@@ -86,18 +114,6 @@ public class DetailsFragment extends GenericFragment {
         setActiveHeart();
 
         btnComplete = view.findViewById(R.id.btnComplete);
-        fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString("screenFrom"));
-        if (fragmentScreen == ChallengesAdapter.FragmentScreen.CURRENTPROFILE || fragmentScreen == ChallengesAdapter.FragmentScreen.USERPROFILE) {
-            btnComplete.setVisibility(View.GONE);
-            tvTimestamp.setVisibility(View.GONE);
-        } else {
-            tvTimestamp.setText(getTimeLeft(challenge.getDeadline().toString()));
-            btnComplete.setOnClickListener(view12 -> {
-                challenge.setCompleted();
-                challenge.saveInBackground();
-                switchFragment(R.id.flContainer, new ProfileFragment());
-            });
-        }
         btnChallenge = view.findViewById(R.id.btnChallenge);
 
         btnChallenge.setOnClickListener(view1 -> {
@@ -105,16 +121,13 @@ public class DetailsFragment extends GenericFragment {
             newChallenge.setPost(post);
 
             FragmentManager fm = getActivity().getSupportFragmentManager();
-            CreateChallengeFragment createChallengeDialogFragment = CreateChallengeFragment.newInstance("Some Title");
+            CreateChallengeFragment createChallengeDialogFragment = CreateChallengeFragment.newInstance();
             Bundle bundle = new Bundle();
             bundle.putParcelable("post", post);
             createChallengeDialogFragment.setArguments(bundle);
             createChallengeDialogFragment.show(fm, "fragment_create_challenge");
         });
 
-        ivProfileImage.setOnClickListener(view14 -> goUserFragment());
-
-        tvUsername.setOnClickListener(view13 -> goUserFragment());
 
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,14 +152,6 @@ public class DetailsFragment extends GenericFragment {
             }
         });
 
-    }
-
-    private void goUserFragment() {
-        UserFragment userFragment = new UserFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("user", challenge.getFrom());
-        userFragment.setArguments(bundle);
-        switchFragment(R.id.flContainer, userFragment);
     }
 
     public static boolean listHasUserLike(ArrayList<ParseUser> list, ParseUser parseUser) {

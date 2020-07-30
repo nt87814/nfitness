@@ -19,11 +19,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
-import com.example.n_fitness.adapters.SpinAdapter;
+import com.example.n_fitness.adapters.CategorySpinAdapter;
+import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
@@ -40,23 +40,23 @@ import java.util.List;
 /**
  * Fragment for composing a workout post
  */
-public class ComposeFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ComposeFragment extends GenericFragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ComposeFragment";
-    public static final int PICK_IMAGE = 1;
+    private static final int REQUEST_CODE_PICK_IMAGE = 1;
 
     private EditText etDescription;
     private ImageView ivPostImage;
     private Button btnSubmit;
     private Button btnGetImage;
     private Spinner spinner;
-    private List<Category> allCategories;
+    private ArrayList<Category> allCategories;
     private Category selectedCategory;
 
     private ParseFile photoFile;
-    public String photoFileName = "photo.jpg";
+    private static final String PHOTO_FILE_NAME = "photo.jpg";
     private Uri imageUri;
-    private SpinAdapter adapter;
+    private CategorySpinAdapter adapter;
 
 
     public ComposeFragment() {
@@ -94,12 +94,15 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             savePost(description, currentUser);
         });
 
-        btnGetImage.setOnClickListener(view12 -> {
-            openGallery();
+        btnGetImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallery();
+            }
         });
 
         allCategories = new ArrayList<>();
-        adapter = new SpinAdapter(getActivity(), android.R.layout.simple_spinner_item, (ArrayList<Category>) allCategories);
+        adapter = new CategorySpinAdapter(getActivity(), android.R.layout.simple_spinner_item, allCategories);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -113,6 +116,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {
+                selectedCategory = null;
             }
         });
 
@@ -127,7 +131,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         imageToBeSent.compress(Bitmap.CompressFormat.PNG, 5, stream);
         byte[] imageRec = stream.toByteArray();
-        photoFile = new ParseFile(photoFileName, imageRec);
+        photoFile = new ParseFile(PHOTO_FILE_NAME, imageRec);
 
         if (selectedCategory == null) {
             Toast.makeText(getContext(), "Please select a category!", Toast.LENGTH_SHORT).show();
@@ -147,6 +151,12 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                 Toast.makeText(getContext(), "Post save was successful!", Toast.LENGTH_SHORT).show();
                 etDescription.setText("");
                 ivPostImage.setImageResource(0);
+                DetailsFragment detailsFragment = new DetailsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(getResources().getString(R.string.post), post);
+                bundle.putString(getResources().getString(R.string.screenFrom), ChallengesAdapter.FragmentScreen.COMPOSE.name());
+                detailsFragment.setArguments(bundle);
+                switchFragment(detailsFragment);
             }
         });
     }
@@ -170,13 +180,13 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
     private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
+        startActivityForResult(gallery, REQUEST_CODE_PICK_IMAGE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             if (data == null) {
                 Toast.makeText(getContext(), "Error getting image!", Toast.LENGTH_SHORT).show();
                 return;

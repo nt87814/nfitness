@@ -286,57 +286,44 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         showAlertDialogForPoint(point);
     }
 
-    // Define a DialogFragment that displays the error dialog
     public static class ErrorDialogFragment extends DialogFragment {
 
         // Global field to contain the error dialog
         private Dialog mDialog;
 
-        // Default constructor. Sets the dialog field to null
         public ErrorDialogFragment() {
             super();
             mDialog = null;
         }
 
-        // Set the dialog to display
         public void setDialog(Dialog dialog) {
             mDialog = dialog;
         }
 
-        // Return a Dialog to the DialogFragment.
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return mDialog;
         }
     }
 
-    // Display the alert that adds the marker
     private void showAlertDialogForPoint(final LatLng point) {
-        // inflate message_item.xml view
         View messageView = LayoutInflater.from(MapActivity.this).
                 inflate(R.layout.message_item, null);
-        // Create alert dialog builder
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        // set message_item.xml to AlertDialog builder
         alertDialogBuilder.setView(messageView);
 
-        // Create alert dialog
         final AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // Configure dialog button (OK)
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Define color of marker icon
                         BitmapDescriptor defaultMarker =
                                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                        // Extract content from alert dialog
                         String title = ((EditText) alertDialog.findViewById(R.id.etTitle)).
                                 getText().toString();
                         String snippet = ((EditText) alertDialog.findViewById(R.id.etSnippet)).
                                 getText().toString();
-                        // Creates and adds marker to the map
                         Marker marker = map.addMarker(new MarkerOptions()
                                 .position(point)
                                 .title(title)
@@ -345,7 +332,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                     }
                 });
 
-        // Configure dialog button (Cancel)
         alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -353,7 +339,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                     }
                 });
 
-        // Display the dialog
         alertDialog.show();
     }
 

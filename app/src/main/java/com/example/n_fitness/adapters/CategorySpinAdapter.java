@@ -16,14 +16,14 @@ import java.util.ArrayList;
 /**
  * Adapter for displaying list of categories when creating a new post
  */
-public class SpinAdapter extends ArrayAdapter<Category> {
+public class CategorySpinAdapter extends ArrayAdapter<Category> {
 
-    private static Context context;
-    private static ArrayList<Category> categories;
+    private Context context;
+    private ArrayList<Category> categories;
 
-    public SpinAdapter(@NonNull Context context, int resource, ArrayList<Category> values) {
+    public CategorySpinAdapter(@NonNull Context context, int resource, ArrayList<Category> values) {
         super(context, resource);
-        SpinAdapter.context = context;
+        this.context = context;
         categories = values;
     }
 

@@ -31,20 +31,11 @@ public class AddChallengeFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static AddChallengeFragment newInstance(String title) {
-        AddChallengeFragment frag = new AddChallengeFragment();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        frag.setArguments(args);
-        return frag;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         bundle = this.getArguments();
         post = bundle.getParcelable("post");
-        getDialog().setTitle("My Dialog Title");
         return inflater.inflate(R.layout.fragment_add_challenge, container, false);
     }
 
@@ -71,9 +62,10 @@ public class AddChallengeFragment extends DialogFragment {
             public void done(ParseException e) {
                 if (e != null) {
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Save was successful!", Toast.LENGTH_SHORT).show();
+                    dismiss();
                 }
-                Toast.makeText(getActivity(), "Save was successful!", Toast.LENGTH_SHORT).show();
-                dismiss();
             }
         });
     }

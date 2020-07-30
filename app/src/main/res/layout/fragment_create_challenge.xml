@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <com.pchmn.materialchips.ChipsInput
-        android:id="@+id/chips_input"
+        android:id="@+id/chipsInput"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:hint="Enter a name" />

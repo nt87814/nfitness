@@ -26,12 +26,12 @@ import java.util.List;
 /**
  * Adapter for posts within category rows in explore page
  */
-public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
+public class ExploreRowAdapter extends RecyclerView.Adapter<ExploreRowAdapter.ViewHolder> {
 
-    private static Context mContext;
-    private static List<Post> mPosts;
+    private Context mContext;
+    private List<Post> mPosts;
 
-    public RowAdapter(Context context, List<Post> objects) {
+    public ExploreRowAdapter(Context context, List<Post> objects) {
         mContext = context;
         mPosts = objects;
     }
@@ -82,7 +82,7 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     FragmentManager fm = ((AppCompatActivity) mContext).getSupportFragmentManager();
-                    AddChallengeFragment addChallengeDialogFragment = AddChallengeFragment.newInstance("Add to my Challenges?");
+                    AddChallengeFragment addChallengeDialogFragment = new AddChallengeFragment();
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("post", post);
                     addChallengeDialogFragment.setArguments(bundle);

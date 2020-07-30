@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class ChallengesFragment extends Fragment {
 
-    private static final String TAG = "PostsFragment";
+    private static final String TAG = "ChallengesFragment";
     protected ChallengesAdapter adapter;
     protected List<Challenge> allChallenges;
 
@@ -63,7 +63,6 @@ public class ChallengesFragment extends Fragment {
         query.include(Challenge.KEY_DEADLINE);
         query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
         query.whereEqualTo(Challenge.KEY_COMPLETED, null);
-        query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
 
         query.findInBackground(new FindCallback<Challenge>() {

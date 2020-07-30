@@ -1,7 +1,6 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.n_fitness.R;
-import com.example.n_fitness.adapters.MainAdapter;
+import com.example.n_fitness.adapters.ExploreMainAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
@@ -29,11 +28,11 @@ import java.util.List;
  */
 public class ExploreFragment extends Fragment {
 
-    public static final String TAG = "ExploreFragment";
+    private static final String TAG = "ExploreFragment";
 
     private RecyclerView rvRootView;
     private RecyclerView.Adapter adapter;
-    private MainAdapter mainAdapter;
+    private ExploreMainAdapter mainAdapter;
     private LinearLayoutManager layoutManager;
     private List<Category> allCategories;
     List<List<Post>> listOfListOfPosts;
@@ -61,19 +60,8 @@ public class ExploreFragment extends Fragment {
 
         allCategories = new ArrayList<>();
 
-        mainAdapter = new MainAdapter(getContext(), listOfListOfPosts, allCategories);
+        mainAdapter = new ExploreMainAdapter(getContext(), listOfListOfPosts, allCategories);
         rvRootView.setAdapter(mainAdapter);
-        rvRootView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
         queryCategories();
         queryPopularPosts();
     }
@@ -85,16 +73,15 @@ public class ExploreFragment extends Fragment {
             @Override
             public void done(List<Category> categories, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Issue with getting categories", e);
                     Toast.makeText(getContext(), "Issue with getting categories", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 for (Category category : categories) {
                     queryPosts(category);
-                    Log.i(TAG, "Category: " + category.getName());
                 }
                 allCategories.addAll(categories);
+                mainAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -106,7 +93,6 @@ public class ExploreFragment extends Fragment {
         query.include(Post.KEY_DESCRIPTION);
         query.include(Post.KEY_LIKES);
         query.whereEqualTo(Post.KEY_CATEGORY, c);
-        query.setLimit(20);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {

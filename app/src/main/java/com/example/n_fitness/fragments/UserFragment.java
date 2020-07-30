@@ -41,7 +41,7 @@ public class UserFragment extends ProfileFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
 
@@ -61,7 +61,7 @@ public class UserFragment extends ProfileFragment {
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
         completedChallenges = new ArrayList<>();
-        adapter = new ChallengesAdapter(getContext(), completedChallenges, ChallengesAdapter.FragmentScreen.CURRENTPROFILE);
+        adapter = new ChallengesAdapter(getContext(), completedChallenges, ChallengesAdapter.FragmentScreen.PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         query();

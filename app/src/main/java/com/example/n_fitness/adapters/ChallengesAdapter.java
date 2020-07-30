@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,11 +20,13 @@ import com.daimajia.swipe.SwipeLayout;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.fragments.DetailsFragment;
+import com.example.n_fitness.fragments.GenericFragment;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.parse.ParseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,21 +44,21 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
  */
 public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.ViewHolder> {
 
-    private static Context context;
-    private static List<Challenge> challenges;
+    private Context context; //TODO: change to MainActivity
+    private List<Challenge> challenges;
     private FragmentScreen fragmentScreen;
     private Location mCurrentLocation;
-
+    private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
     public enum FragmentScreen {
         HOME,
-        CURRENTPROFILE,
-        USERPROFILE
+        PROFILE,
+        COMPOSE
     }
 
     public ChallengesAdapter(Context context, List<Challenge> challenges, FragmentScreen fs) {
-        ChallengesAdapter.context = context;
-        ChallengesAdapter.challenges = challenges;
+        this.context = context;
+        this.challenges = challenges;
         fragmentScreen = fs;
         getCurrentLocation();
     }
@@ -115,52 +115,26 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             tvComplete = itemView.findViewById(R.id.tvComplete);
             ll_surface_view = itemView.findViewById(R.id.ll_surface_view);
 
+            tvFrom.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ParseUser fromUser = (challenges.get(getAdapterPosition())).getFrom();
+                    GenericFragment.goUserFragment(fromUser, (MainActivity) context);
+                }
+            });
+
             ll_surface_view.setOnClickListener(view -> {
                 if (swipeLayout.getOpenStatus() == SwipeLayout.Status.Close) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Challenge challenge = challenges.get(position);
-                        Post post = challenge.getPost();
                         DetailsFragment detailsFragment = new DetailsFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("challenge", challenge);
-                        bundle.putParcelable("post", post);
-                        bundle.putString("screenFrom", fragmentScreen.name());
+                        bundle.putParcelable(context.getResources().getString(R.string.challenge), challenge);
+                        bundle.putString(context.getResources().getString(R.string.screenFrom), fragmentScreen.name());
                         detailsFragment.setArguments(bundle);
-                        switchFragment(R.id.flContainer, detailsFragment);
+                        GenericFragment.switchFragment(detailsFragment, (MainActivity) context);
                     }
-                }
-            });
-
-            swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-                @Override
-                public void onClose(SwipeLayout layout) {
-                    //when the SurfaceView totally cover the BottomView.
-                }
-
-                @Override
-                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                    //you are swiping.
-                }
-
-                @Override
-                public void onStartOpen(SwipeLayout layout) {
-
-                }
-
-                @Override
-                public void onOpen(SwipeLayout layout) {
-                    //when the BottomView totally show.
-                }
-
-                @Override
-                public void onStartClose(SwipeLayout layout) {
-
-                }
-
-                @Override
-                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                    //when user's hand released.
                 }
             });
 
@@ -184,10 +158,9 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             Post post = challenge.getPost();
             switch (fragmentScreen) {
                 case HOME:
-                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));    //need to make required
+                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));
                     break;
-                case CURRENTPROFILE:
-                case USERPROFILE:
+                case PROFILE:
                     swipeLayout.setSwipeEnabled(false);
                     tvDeadline.setText(getDisplayDate(challenge.getCompleted().toString()));
                     tvFrom.setVisibility(View.GONE);
@@ -201,27 +174,16 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         }
     }
 
-    public void switchFragment(int id, Fragment fragment) {
-        if (context == null)
-            return;
-        if (context instanceof MainActivity) {
-            MainActivity mainActivity = (MainActivity) context;
-            mainActivity.loadFragment(id, fragment);
-        }
-
-    }
-
     public static String getTimeLeft(String rawJsonDate) {
         if (rawJsonDate == null) {
             return "NULL";
         }
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+
+        SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         sf.setLenient(true);
 
         long diff = 0;
         try {
-            long dateMillis = sf.parse(rawJsonDate).getTime();
             Date date1 = sf.parse(rawJsonDate);
             Date date2 = new Date(System.currentTimeMillis());
             diff = date1.getTime() - date2.getTime();
@@ -237,8 +199,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         if (rawJsonDate == null) {
             return "NULL";
         }
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         sf.setLenient(true);
         Date date = new Date();
         try {
@@ -247,15 +208,8 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             e.printStackTrace();
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM");
-        rString += simpleDateFormat.format(date).toUpperCase() + " ";
-
-        simpleDateFormat = new SimpleDateFormat("dd");
-        rString += simpleDateFormat.format(date).toUpperCase() + " ";
-
-
-        simpleDateFormat = new SimpleDateFormat("YYYY");
-        rString += simpleDateFormat.format(date).toUpperCase();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd YYYY");
+        rString = simpleDateFormat.format(date).toUpperCase();
 
         return "Completed on " + rString;
     }
@@ -288,9 +242,5 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         }
 
         mCurrentLocation = location;
-        String msg = "Updated Location: " +
-                location.getLatitude() + "," +
-                location.getLongitude();
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 }

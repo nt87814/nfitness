@@ -76,6 +76,8 @@ public class Post extends ParseObject {
         put(KEY_NUM_LIKES, newNumLikes);
     }
 
-    public int getNumLikes() { return getInt(KEY_NUM_LIKES); }
+    public int getNumLikes() {
+        return getInt(KEY_NUM_LIKES);
+    }
 
 }

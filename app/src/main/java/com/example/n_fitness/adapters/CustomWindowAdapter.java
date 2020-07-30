@@ -9,6 +9,9 @@ import com.example.n_fitness.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
+/**
+ * Adapter for displaying a custom window adapter for a marker on the map
+ */
 public class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     LayoutInflater mInflater;

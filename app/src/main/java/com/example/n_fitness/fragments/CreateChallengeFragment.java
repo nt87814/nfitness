@@ -1,7 +1,6 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +30,11 @@ import java.util.List;
  */
 public class CreateChallengeFragment extends DialogFragment {
 
-    public static final String TAG = "CreateChallengeFragment";
+    private static final String TAG = "CreateChallengeFragment";
     private List<ContactChip> contactList;
-    ChipsInput chipsInput;
-    Button btnConfirm;
-    Post post;
+    private ChipsInput chipsInput;
+    private Button btnConfirm;
+    private Post post;
 
     private Bundle bundle;
 
@@ -44,11 +43,8 @@ public class CreateChallengeFragment extends DialogFragment {
         // Empty constructor is required for DialogFragment
     }
 
-    public static CreateChallengeFragment newInstance(String title) {
+    public static CreateChallengeFragment newInstance() {
         CreateChallengeFragment frag = new CreateChallengeFragment();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        frag.setArguments(args);
         return frag;
     }
 
@@ -64,7 +60,7 @@ public class CreateChallengeFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        chipsInput = view.findViewById(R.id.chips_input);
+        chipsInput = view.findViewById(R.id.chipsInput);
         btnConfirm = view.findViewById(R.id.btnConfirm);
         contactList = new ArrayList<>();
         chipsInput.setFilterableList(contactList);
@@ -87,12 +83,11 @@ public class CreateChallengeFragment extends DialogFragment {
             @Override
             public void done(List<ParseUser> users, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Issue with getting users", e);
+                    Toast.makeText(getContext(), "Issue with getting users", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 for (ParseUser user : users) {
-                    Log.i(TAG, "User: " + user.getUsername());
                     ContactChip contactChip = new ContactChip(user.getObjectId(), user.getUsername(), user);
                     contactList.add(contactChip);
                 }
@@ -114,8 +109,9 @@ public class CreateChallengeFragment extends DialogFragment {
             public void done(ParseException e) {
                 if (e != null) {
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Save was successful!", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getContext(), "Save was successful!", Toast.LENGTH_SHORT).show();
             }
         });
     }

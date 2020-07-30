@@ -64,7 +64,7 @@ public class ProfileFragment extends Fragment {
     protected TextView tvTopLabel;
 
     private File photoFile;
-    private static final String photoFileName = "photo.jpg";
+    private static final String PHOTO_FILE_NAME = "photo.jpg";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -110,7 +110,7 @@ public class ProfileFragment extends Fragment {
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
         completedChallenges = new ArrayList<>();
-        adapter = new ChallengesAdapter(getContext(), completedChallenges, ChallengesAdapter.FragmentScreen.CURRENTPROFILE);
+        adapter = new ChallengesAdapter(getContext(), completedChallenges, ChallengesAdapter.FragmentScreen.PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         query();
@@ -185,7 +185,7 @@ public class ProfileFragment extends Fragment {
 
     private void launchCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri(photoFileName);
+        photoFile = getPhotoFileUri(PHOTO_FILE_NAME);
 
         Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider1", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
@@ -195,7 +195,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    public File getPhotoFileUri(String fileName) {
+    private File getPhotoFileUri(String fileName) {
         File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
             Log.d(TAG, "failed to create directory");
@@ -226,15 +226,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Error while saving", e);
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "User save was successful!", Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG, "User save was successful!");
             }
         });
     }
 
-    static class MutableInt {
+    private static class MutableInt {
         private int value = 1; // start at 1 since it's counting
 
         public void increment() {

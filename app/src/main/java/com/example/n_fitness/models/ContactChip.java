@@ -12,13 +12,11 @@ import com.pchmn.materialchips.model.ChipInterface;
 public class ContactChip implements ChipInterface {
 
     private String id;
-    //    private Uri avatarUri;
     private String name;
     private ParseUser user;
 
     public ContactChip(String id, String name, ParseUser user) {
         this.id = id;
-//        this.avatarUri = avatarUri;
         this.name = name;
         this.user = user;
     }
