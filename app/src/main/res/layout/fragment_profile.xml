@@ -9,19 +9,9 @@
         android:id="@+id/ivProfileImage"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:padding="8dp"
-        tools:src="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/btnEdit"
-        android:layout_alignParentEnd="true"
+        android:padding="4dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:text="Logout" />
+        tools:src="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/btnEdit"
@@ -29,11 +19,25 @@
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="160dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginEnd="8dp"
+        android:layout_toEndOf="@+id/tvUsername"
         android:text="Edit" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/btnEdit"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/tvUsername"
+        android:text="Logout" />
+
 
     <TextView
         android:id="@+id/tvUsername"
@@ -52,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfileImage"
         android:layout_marginTop="24dp"
+        android:layout_marginLeft="20dp"
         android:text="Stats: " />
 
     <TextView
@@ -59,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvStats"
+        android:layout_marginLeft="20dp"
         android:text="Top Category: " />
 
     <TextView
