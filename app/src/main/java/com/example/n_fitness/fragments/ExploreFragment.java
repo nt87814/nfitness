@@ -1,6 +1,7 @@
 package com.example.n_fitness.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,9 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Fragment for viewing all of the workouts by category
@@ -33,6 +36,7 @@ public class ExploreFragment extends Fragment {
     private ExploreMainAdapter mainAdapter;
     private List<Category> allCategories;
     List<List<Post>> listOfListOfPosts;
+    Map<Category, List<Post>> mapOfPostLists;
 
 
     public ExploreFragment() {
@@ -54,10 +58,10 @@ public class ExploreFragment extends Fragment {
         rvRootView.setHasFixedSize(true);
 
         listOfListOfPosts = new ArrayList<>();
-
+        mapOfPostLists = new HashMap<>();
         allCategories = new ArrayList<>();
 
-        mainAdapter = new ExploreMainAdapter(getContext(), listOfListOfPosts, allCategories);
+        mainAdapter = new ExploreMainAdapter(getContext(), mapOfPostLists, allCategories, listOfListOfPosts);
         rvRootView.setAdapter(mainAdapter);
         queryCategories();
         queryPopularPosts();
@@ -66,6 +70,7 @@ public class ExploreFragment extends Fragment {
     private void queryCategories() {
         ParseQuery<Category> query = ParseQuery.getQuery(Category.class);
         query.include(Category.KEY_NAME);
+        query.orderByAscending(Category.KEY_NAME);
         query.findInBackground(new FindCallback<Category>() {
             @Override
             public void done(List<Category> categories, ParseException e) {
@@ -99,6 +104,7 @@ public class ExploreFragment extends Fragment {
                 }
 
                 listOfListOfPosts.add(objects);
+                mapOfPostLists.put(c, objects);
                 mainAdapter.notifyDataSetChanged();
             }
         });
@@ -110,11 +116,13 @@ public class ExploreFragment extends Fragment {
         query.include(Post.KEY_DESCRIPTION);
         query.include(Post.KEY_LIKES);
         query.orderByDescending(Post.KEY_NUM_LIKES);
-        query.setLimit(10);
+        query.setLimit(5);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 listOfListOfPosts.add(0, objects);
+                mapOfPostLists.put(new Category(), objects);
+                mainAdapter.notifyDataSetChanged();
             }
         });
     }

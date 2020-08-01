@@ -15,7 +15,9 @@ import com.example.n_fitness.R;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Post;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Adapter for List of rows in the explore page for viewing all posts (workouts) by category
@@ -23,13 +25,15 @@ import java.util.List;
 public class ExploreMainAdapter extends RecyclerView.Adapter<ExploreMainAdapter.ViewHolder> {
 
     private Context context;
-    private List<List<Post>> rows;
+    private Map<Category, List<Post>> rows;
     private List<Category> categories;
+    List<List<Post>> otherRows;
 
-    public ExploreMainAdapter(Context context, List<List<Post>> objects, List<Category> categories) {
+    public ExploreMainAdapter(Context context, Map<Category, List<Post>> objects, List<Category> categories, List<List<Post>> posts) {
         this.context = context;
-        rows = objects;
+        this.rows = objects;
         this.categories = categories;
+        this.otherRows = posts;
     }
 
     @NonNull
@@ -43,18 +47,25 @@ public class ExploreMainAdapter extends RecyclerView.Adapter<ExploreMainAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        List<Post> rowPosts = rows.get(position);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        holder.rvRow.setLayoutManager(layoutManager);
-        holder.rvRow.setHasFixedSize(true);
+        List<Post> rowPosts = new ArrayList<>();
         ExploreRowAdapter rowsAdapter = new ExploreRowAdapter(context, rowPosts);
-        holder.rvRow.setAdapter(rowsAdapter);
         if (position == 0) {
             //popular workouts
             holder.tvRowTitle.setText("Popular");
+            rowPosts.addAll(otherRows.get(0));
+            rowsAdapter.notifyDataSetChanged();
         } else {
-            holder.tvRowTitle.setText(categories.get(position - 1).getName());
+            Category category = categories.get(position - 1);
+            holder.tvRowTitle.setText(category.getName());
+            if (rows.get(category) != null) {
+                rowPosts.addAll(rows.get(category));
+                rowsAdapter.notifyDataSetChanged();
+            }
         }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        holder.rvRow.setLayoutManager(layoutManager);
+        holder.rvRow.setHasFixedSize(true);
+        holder.rvRow.setAdapter(rowsAdapter);
 
     }
 

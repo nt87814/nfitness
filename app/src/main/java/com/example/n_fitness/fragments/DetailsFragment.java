@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
@@ -63,6 +64,8 @@ public class DetailsFragment extends GenericFragment {
         TextView tvTimestamp = view.findViewById(R.id.tvTimestamp);
         Button btnComplete = view.findViewById(R.id.btnComplete);
         Button btnChallenge = view.findViewById(R.id.btnChallenge);
+
+        ((MainActivity) getActivity()).btnCreate.setVisibility(View.GONE);
 
         ChallengesAdapter.FragmentScreen fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString(getContext().getResources().getString(R.string.screenFrom)));
         switch (fragmentScreen) {

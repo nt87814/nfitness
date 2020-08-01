@@ -146,7 +146,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                         challenge.setLocation(mCurrentLocation);
                         challenge.saveInBackground();
                         challenges.remove(position);
-                        notifyDataSetChanged();
+                        notifyItemRemoved(position);
                     }
                 }
             });
