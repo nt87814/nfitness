@@ -54,16 +54,18 @@
         android:id="@+id/tvTopLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogout"
+        android:layout_below="@id/ivProfileImage"
         android:layout_marginLeft="20dp"
-        android:textStyle="bold"
-        android:text="Top Category: " />
+        android:layout_marginTop="8dp"
+        android:text="Top Category: "
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogout"
+        android:layout_below="@id/ivProfileImage"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/tvTopLabel"
         tools:text="category" />
 
