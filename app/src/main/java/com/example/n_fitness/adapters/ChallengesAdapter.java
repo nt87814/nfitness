@@ -209,7 +209,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd YYYY");
         rString = simpleDateFormat.format(date).toUpperCase();
 
-        return "Completed on " + rString;
+        return rString;
     }
 
     @SuppressWarnings({"MissingPermission"})
