@@ -27,7 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.FriendsActivity;
 import com.example.n_fitness.activities.LoginActivity;
+import com.example.n_fitness.activities.MainActivity;
+import com.example.n_fitness.activities.MapActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
@@ -84,6 +87,7 @@ public class ProfileFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         profile = view.findViewById(R.id.profile);
+        TextView tvFriends = view.findViewById(R.id.tvFriends);
 
         tvUsername.setText(currentUser.getUsername());
         ParseFile profileImage = currentUser.getParseFile("image");
@@ -109,6 +113,15 @@ public class ProfileFragment extends Fragment {
 
         tvTopLabel = view.findViewById(R.id.tvTopLabel);
         tvTop = view.findViewById(R.id.tvTop);
+
+        tvFriends.setText("friends");
+        tvFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), FriendsActivity.class);
+                startActivity(i);
+            }
+        });
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
         completedChallenges = new ArrayList<>();

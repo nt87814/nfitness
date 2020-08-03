@@ -166,7 +166,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             tvDescription.setText(post.getDescription());
             tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
             if (post.getImage() != null) {
-                Glide.with(context).load(post.getImage().getUrl()).centerInside().into(ivImage);
+                    Glide.with(context).load(post.getImage().getUrl()).centerInside().into(ivImage);
             }
         }
     }

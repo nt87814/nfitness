@@ -60,6 +60,18 @@
         tools:text="username" />
 
     <TextView
+        android:id="@+id/tvFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUsername"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/profile"
+        android:clickable="true"
+        android:textColor="@color/colorBlue"
+        tools:text="100 friends" />
+
+    <TextView
         android:id="@+id/tvTopLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,6 +106,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tvRvLabel"
         android:padding="8dp" />
+
 
 
 </RelativeLayout>
