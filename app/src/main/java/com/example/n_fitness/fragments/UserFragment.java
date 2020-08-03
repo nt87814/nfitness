@@ -53,8 +53,6 @@ public class UserFragment extends ProfileFragment {
 
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setVisibility(View.GONE);
-        btnEdit = view.findViewById(R.id.btnEdit);
-        btnEdit.setVisibility(View.GONE);
 
         tvTopLabel = view.findViewById(R.id.tvTopLabel);
         tvTop = view.findViewById(R.id.tvTop);

@@ -5,9 +5,20 @@
     android:layout_height="match_parent">
     tools:context=".MapActivity" >
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:text="Completed Challenges Nearby"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textStyle="bold" />
+
     <fragment
         android:id="@+id/map"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/tvTitle"/>
 </RelativeLayout>

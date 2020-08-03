@@ -143,7 +143,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
                     return;
                 }
 
-                Toast.makeText(getContext(), "Post save was successful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Created new workout!", Toast.LENGTH_SHORT).show();
                 etDescription.setText("");
                 ivPostImage.setImageResource(0);
                 DetailsFragment detailsFragment = new DetailsFragment();

@@ -161,7 +161,6 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                 case PROFILE:
                     swipeLayout.setSwipeEnabled(false);
                     tvDeadline.setText(getDisplayDate(challenge.getCompleted().toString()));
-                    tvFrom.setVisibility(View.GONE);
                     break;
             }
             tvDescription.setText(post.getDescription());
@@ -206,8 +205,8 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             e.printStackTrace();
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd YYYY");
-        rString = simpleDateFormat.format(date).toUpperCase();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d YYYY");
+        rString = simpleDateFormat.format(date);
 
         return rString;
     }

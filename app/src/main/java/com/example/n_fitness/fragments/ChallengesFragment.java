@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +53,7 @@ public class ChallengesFragment extends Fragment {
         adapter = new ChallengesAdapter(getContext(), allChallenges, ChallengesAdapter.FragmentScreen.HOME);
         rvChallenges.setAdapter(adapter);
         rvChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvChallenges.addItemDecoration(new DividerItemDecoration(rvChallenges.getContext(), DividerItemDecoration.VERTICAL));
         query();
     }
 
@@ -63,7 +65,7 @@ public class ChallengesFragment extends Fragment {
         query.include(Challenge.KEY_DEADLINE);
         query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
         query.whereEqualTo(Challenge.KEY_COMPLETED, null);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.addAscendingOrder(Challenge.KEY_DEADLINE);
 
         query.findInBackground(new FindCallback<Challenge>() {
             @Override

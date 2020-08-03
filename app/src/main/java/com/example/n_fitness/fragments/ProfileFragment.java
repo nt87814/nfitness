@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,12 +55,12 @@ public class ProfileFragment extends Fragment {
     protected List<Challenge> completedChallenges;
     protected ChallengesAdapter adapter;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
+    private RelativeLayout profile;
 
 
     protected ImageView ivProfileImage;
     protected TextView tvUsername;
     protected Button btnLogout;
-    protected Button btnEdit;
     protected RecyclerView rvProfileChallenges;
     protected TextView tvTop;
     protected TextView tvTopLabel;
@@ -81,6 +83,7 @@ public class ProfileFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
+        profile = view.findViewById(R.id.profile);
 
         tvUsername.setText(currentUser.getUsername());
         ParseFile profileImage = currentUser.getParseFile("image");
@@ -97,8 +100,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        btnEdit = view.findViewById(R.id.btnEdit);
-        btnEdit.setOnClickListener(new View.OnClickListener() {
+        profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera();
@@ -113,6 +115,7 @@ public class ProfileFragment extends Fragment {
         adapter = new ChallengesAdapter(getContext(), completedChallenges, ChallengesAdapter.FragmentScreen.PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvProfileChallenges.addItemDecoration(new DividerItemDecoration(rvProfileChallenges.getContext(), DividerItemDecoration.VERTICAL));
         query();
     }
 

@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.n_fitness.R;
+import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -75,7 +76,8 @@ public class AddChallengeFragment extends DialogFragment {
                         c.setTime(deadline);
                         c.add(Calendar.DATE, 1); // 1 day off
                         deadline = c.getTime();
-                        tvDeadline.setText(deadline.toString());
+                        String displayDate = ChallengesAdapter.getDisplayDate(deadline.toString());
+                        tvDeadline.setText(displayDate);
                     }
                 });
             }

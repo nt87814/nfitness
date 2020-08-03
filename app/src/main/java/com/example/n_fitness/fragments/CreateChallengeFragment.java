@@ -139,7 +139,7 @@ public class CreateChallengeFragment extends DialogFragment {
                 if (e != null) {
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Save was successful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Challenge Submitted!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

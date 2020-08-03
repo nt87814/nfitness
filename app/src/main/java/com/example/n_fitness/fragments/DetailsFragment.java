@@ -1,5 +1,9 @@
 package com.example.n_fitness.fragments;
 
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -13,6 +17,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
@@ -65,7 +71,7 @@ public class DetailsFragment extends GenericFragment {
         Button btnComplete = view.findViewById(R.id.btnComplete);
         Button btnChallenge = view.findViewById(R.id.btnChallenge);
 
-        ((MainActivity) getActivity()).btnCreate.setVisibility(View.GONE);
+//        ((MainActivity) getActivity()).btnCreate.setVisibility(View.GONE);
 
         ChallengesAdapter.FragmentScreen fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString(getContext().getResources().getString(R.string.screenFrom)));
         switch (fragmentScreen) {
@@ -168,7 +174,7 @@ public class DetailsFragment extends GenericFragment {
 
     private void setActiveHeart() {
         if (post.getLikes() != null && listHasUserLike(post.getLikes(), ParseUser.getCurrentUser())) {
-            btnLike.setImageResource(R.drawable.ufi_heart_active);
+            btnLike.setImageResource(R.drawable.heart_active);
         }
     }
 
