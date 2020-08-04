@@ -20,17 +20,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
-import com.example.n_fitness.activities.FriendsActivity;
 import com.example.n_fitness.activities.LoginActivity;
-import com.example.n_fitness.activities.MainActivity;
-import com.example.n_fitness.activities.MapActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
@@ -52,7 +48,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Fragment for viewing current user's profile
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends GenericFragment {
 
     private static final String TAG = "ProfileFragment";
     protected List<Challenge> completedChallenges;
@@ -118,8 +114,8 @@ public class ProfileFragment extends Fragment {
         tvFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), FriendsActivity.class);
-                startActivity(i);
+                FriendsFragment friendsFragment = new FriendsFragment();
+                switchFragment(friendsFragment);
             }
         });
 

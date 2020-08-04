@@ -30,7 +30,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.FriendsActivity"></activity>
         <!-- https://stackoverflow.com/a/50779232/961939 -->
         <uses-library
             android:name="org.apache.http.legacy"
