@@ -4,12 +4,19 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.MainActivity;
+import com.example.n_fitness.models.Challenge;
+import com.example.n_fitness.models.Post;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.Date;
 
 /**
  * Generic Fragment class that other fragments in this project can extend from

@@ -98,10 +98,9 @@ public class AddChallengeFragment extends DialogFragment {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "Save was successful!", Toast.LENGTH_SHORT).show();
-                    dismiss();
                 }
             }
         });

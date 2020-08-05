@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +39,7 @@ public class DetailsFragment extends GenericFragment {
     private Bundle bundle;
     private Challenge challenge;
     private Post post;
+    GenericFragment genericFragment;
 
     private ImageButton btnLike;
     private TextView tvLikes;
@@ -50,6 +52,7 @@ public class DetailsFragment extends GenericFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         bundle = this.getArguments();
+        genericFragment = new GenericFragment();
         return inflater.inflate(R.layout.fragment_details, container, false);
     }
 
@@ -66,6 +69,7 @@ public class DetailsFragment extends GenericFragment {
         TextView tvTimestamp = view.findViewById(R.id.tvTimestamp);
         Button btnComplete = view.findViewById(R.id.btnComplete);
         Button btnChallenge = view.findViewById(R.id.btnChallenge);
+        Button btnAdd = view.findViewById(R.id.btnAdd);
 
 //        ((MainActivity) getActivity()).btnCreate.setVisibility(View.GONE);
 
@@ -93,6 +97,7 @@ public class DetailsFragment extends GenericFragment {
                     challenge.setCompleted();
                     challenge.saveInBackground();
                 });
+                btnAdd.setVisibility(View.GONE);
                 break;
             case COMPOSE:
                 btnComplete.setVisibility(View.GONE);
@@ -143,6 +148,18 @@ public class DetailsFragment extends GenericFragment {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 gestureDetector.onTouchEvent(motionEvent);
                 return true;
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                AddChallengeFragment addChallengeDialogFragment = new AddChallengeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("post", post);
+                addChallengeDialogFragment.setArguments(bundle);
+                addChallengeDialogFragment.show(fm, "fragment_add_challenge");
             }
         });
 

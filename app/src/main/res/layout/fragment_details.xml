@@ -101,6 +101,16 @@
         android:text="Complete" />
 
     <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDescription"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@+id/btnChallenge"
+        android:text="Add" />
+
+    <Button
         android:id="@+id/btnChallenge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
