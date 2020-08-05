@@ -44,6 +44,9 @@ public class AddChallengeFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
         post = bundle.getParcelable("post");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 7); // Adding 7 days
+        deadline = c.getTime();
         return inflater.inflate(R.layout.fragment_add_challenge, container, false);
     }
 
@@ -53,6 +56,9 @@ public class AddChallengeFragment extends DialogFragment {
         ImageButton btnDeadline = view.findViewById(R.id.btnDeadline);
         TextView tvDeadline = view.findViewById(R.id.tvDeadline);
         Button btnConfirm = view.findViewById(R.id.btnConfirm);
+
+        String displayDate = ChallengesAdapter.getDisplayDate(deadline.toString());
+        tvDeadline.setText(displayDate);
 
         //TODO: redundant code
         btnDeadline.setOnClickListener(new View.OnClickListener() {
@@ -89,11 +95,7 @@ public class AddChallengeFragment extends DialogFragment {
         challenge.setPost(post);
         challenge.setFrom(ParseUser.getCurrentUser());
         challenge.setRecipient(user);
-        if (deadline != null) {
-            challenge.setDeadline(deadline);
-        } else {
-            challenge.setDeadline();
-        }
+        challenge.setDeadline(deadline);
         challenge.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

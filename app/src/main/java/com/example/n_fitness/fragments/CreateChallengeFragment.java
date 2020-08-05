@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.n_fitness.R;
+import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.ContactChip;
 import com.example.n_fitness.models.Post;
@@ -56,6 +57,9 @@ public class CreateChallengeFragment extends DialogFragment {
         query();
         Bundle bundle = this.getArguments();
         post = bundle.getParcelable("post");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 7); // Adding 7 days
+        deadline = c.getTime();
         return inflater.inflate(R.layout.fragment_create_challenge, container, false);
     }
 
@@ -68,6 +72,8 @@ public class CreateChallengeFragment extends DialogFragment {
         TextView tvDeadline = view.findViewById(R.id.tvDeadline);
         contactList = new ArrayList<>();
         chipsInput.setFilterableList(contactList);
+        String displayDate = ChallengesAdapter.getDisplayDate(deadline.toString());
+        tvDeadline.setText(displayDate);
 
         btnDeadline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +89,8 @@ public class CreateChallengeFragment extends DialogFragment {
                         c.setTime(deadline);
                         c.add(Calendar.DATE, 1); // 1 day off
                         deadline = c.getTime();
-                        tvDeadline.setText(deadline.toString());
+                        String displayDate = ChallengesAdapter.getDisplayDate(deadline.toString());
+                        tvDeadline.setText(displayDate);
                     }
                 });
             }
@@ -127,11 +134,7 @@ public class CreateChallengeFragment extends DialogFragment {
         challenge.setPost(post);
         challenge.setFrom(ParseUser.getCurrentUser());
         challenge.setRecipient(user);
-        if (deadline != null) {
-            challenge.setDeadline(deadline);
-        } else {
-            challenge.setDeadline();
-        }
+        challenge.setDeadline(deadline);
         challenge.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

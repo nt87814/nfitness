@@ -56,6 +56,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
     public enum FragmentScreen {
         HOME,
+        OTHER_PROFILE,
         PROFILE,
         COMPOSE
     }
@@ -183,14 +184,33 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                 case HOME:
 //                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));
                     tvDeadline.setText(getRelativeTimeAgo(challenge.getDeadline().toString()));
+                    if (challenge.getFrom().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                        tvFrom.setText("My challenge");
+                    }
+
+                    else {
+                        tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
+                    }
                     break;
                 case PROFILE:
                     swipeLayout.setSwipeEnabled(false);
                     tvDeadline.setText(getDisplayDate(challenge.getCompleted().toString()));
+                    //TODO REDUNDANT
+                    if (challenge.getFrom().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                        tvFrom.setText("My challenge");
+                    }
+
+                    else {
+                        tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
+                    }
+                    break;
+                case OTHER_PROFILE:
+                    swipeLayout.setSwipeEnabled(false);
+                    tvDeadline.setText(getDisplayDate(challenge.getCompleted().toString()));
+                    tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
                     break;
             }
             tvDescription.setText(post.getDescription());
-            tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
             if (post.getImage() != null) {
                 Glide.with(context).load(post.getImage().getUrl()).centerInside().transform(new RoundedCorners(30)).into(ivImage);
             }

@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        android:text="Choose a deadline" />
+        android:text="Change deadline" />
 
     <ImageButton
         android:id="@+id/btnDeadline"
