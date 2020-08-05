@@ -23,6 +23,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,7 +33,9 @@ public class ChallengesFragment extends Fragment {
 
     private static final String TAG = "ChallengesFragment";
     protected ChallengesAdapter adapter;
-    protected List<Challenge> allChallenges;
+    protected List<Challenge> currentChallenges;
+    private List<Challenge> pastChallenges;
+    private Date current;
 
     public ChallengesFragment() {
         // Required empty public constructor
@@ -48,13 +51,16 @@ public class ChallengesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView rvChallenges = view.findViewById(R.id.rvChallenges);
+        current = new Date();
 
-        allChallenges = new ArrayList<>();
-        adapter = new ChallengesAdapter(getContext(), allChallenges, ChallengesAdapter.FragmentScreen.HOME);
+        currentChallenges = new ArrayList<>();
+        pastChallenges = new ArrayList<>();
+        adapter = new ChallengesAdapter(getContext(), currentChallenges, pastChallenges, ChallengesAdapter.FragmentScreen.HOME);
         rvChallenges.setAdapter(adapter);
         rvChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         rvChallenges.addItemDecoration(new DividerItemDecoration(rvChallenges.getContext(), DividerItemDecoration.VERTICAL));
         query();
+        queryPastChallenges();
     }
 
     private void query() {
@@ -65,6 +71,8 @@ public class ChallengesFragment extends Fragment {
         query.include(Challenge.KEY_DEADLINE);
         query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
         query.whereEqualTo(Challenge.KEY_COMPLETED, null);
+        query.whereNotEqualTo(Challenge.KEY_DELETED, true);
+        query.whereGreaterThan(Challenge.KEY_DEADLINE, current);
         query.addAscendingOrder(Challenge.KEY_DEADLINE);
 
         query.findInBackground(new FindCallback<Challenge>() {
@@ -77,6 +85,31 @@ public class ChallengesFragment extends Fragment {
 
                 adapter.clear();
                 adapter.addAll(challenges);
+            }
+        });
+    }
+
+    private void queryPastChallenges() {
+        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
+        query.include(Challenge.KEY_FROM);
+        query.include(Challenge.KEY_REC);
+        query.include(Challenge.KEY_POST);
+        query.include(Challenge.KEY_DEADLINE);
+        query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
+        query.whereEqualTo(Challenge.KEY_COMPLETED, null);
+        query.whereNotEqualTo(Challenge.KEY_DELETED, true);
+        query.whereLessThan(Challenge.KEY_DEADLINE, current);
+        query.addAscendingOrder(Challenge.KEY_DEADLINE);
+
+        query.findInBackground(new FindCallback<Challenge>() {
+            @Override
+            public void done(List<Challenge> challenges, ParseException e) {
+                if (e != null) {
+                    Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                pastChallenges.addAll(challenges);
+                adapter.notifyDataSetChanged();
             }
         });
     }

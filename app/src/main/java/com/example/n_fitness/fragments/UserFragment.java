@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +47,11 @@ public class UserFragment extends ProfileFragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
 
+        ImageView icCamera = view.findViewById(R.id.icCamera);
+        icCamera.setVisibility(View.GONE);
+        RelativeLayout profile = view.findViewById(R.id.profile);
+        profile.setOnClickListener(null);
+
         tvUsername.setText(user.getUsername());
         ParseFile profileImage = user.getParseFile("image");
         if (profileImage != null) {
@@ -59,7 +66,7 @@ public class UserFragment extends ProfileFragment {
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
         completedChallenges = new ArrayList<>();
-        adapter = new ChallengesAdapter(getContext(), completedChallenges, ChallengesAdapter.FragmentScreen.PROFILE);
+        adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         query();

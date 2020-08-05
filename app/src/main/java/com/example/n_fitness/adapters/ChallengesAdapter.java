@@ -46,6 +46,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
     private Context context; //TODO: change to MainActivity
     private List<Challenge> challenges;
+    private List<Challenge> pastChallenges;
     private FragmentScreen fragmentScreen;
     private Location mCurrentLocation;
     private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
@@ -56,9 +57,10 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         COMPOSE
     }
 
-    public ChallengesAdapter(Context context, List<Challenge> challenges, FragmentScreen fs) {
+    public ChallengesAdapter(Context context, List<Challenge> challenges, List<Challenge> pastChallenges, FragmentScreen fs) {
         this.context = context;
         this.challenges = challenges;
+        this.pastChallenges = pastChallenges;
         fragmentScreen = fs;
         getCurrentLocation();
     }
@@ -72,12 +74,15 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Challenge challenge = challenges.get(position);
+        Challenge challenge = getChallengeFromPosition(position);
         holder.bind(challenge);
     }
 
     @Override
     public int getItemCount() {
+        if (pastChallenges != null) {
+            return challenges.size() + pastChallenges.size();
+        }
         return challenges.size();
     }
 
@@ -111,6 +116,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvFrom = itemView.findViewById(R.id.tvFrom);
             TextView tvComplete = itemView.findViewById(R.id.tvComplete);
+            ImageView delete = itemView.findViewById(R.id.delete);
             LinearLayout ll_surface_view = itemView.findViewById(R.id.ll_surface_view);
 
             tvFrom.setOnClickListener(new View.OnClickListener() {
@@ -121,11 +127,13 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                 }
             });
 
+            swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewWithTag("Bottom2"));
+
             ll_surface_view.setOnClickListener(view -> {
                 if (swipeLayout.getOpenStatus() == SwipeLayout.Status.Close) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Challenge challenge = challenges.get(position);
+                        Challenge challenge = getChallengeFromPosition(position);
                         DetailsFragment detailsFragment = new DetailsFragment();
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(context.getResources().getString(R.string.challenge), challenge);
@@ -141,11 +149,25 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Challenge challenge = challenges.get(position);
+                        Challenge challenge = getChallengeFromPosition(position);
                         challenge.setCompleted();
                         challenge.setLocation(mCurrentLocation);
                         challenge.saveInBackground();
-                        challenges.remove(position);
+                        removeChallengeAtPosition(position);
+                        notifyItemRemoved(position);
+                    }
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Challenge challenge = getChallengeFromPosition(position);
+                        challenge.setDeleted();
+                        challenge.saveInBackground();
+                        removeChallengeAtPosition(position);
                         notifyItemRemoved(position);
                     }
                 }
@@ -188,7 +210,17 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             e.printStackTrace();
         }
 
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + " days left";
+        int daysLeft = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        if (daysLeft == 1) {
+            return 1 + " day left";
+        }
+
+        else if (daysLeft < 1) {
+            return "Deadline passed";
+        }
+
+        return daysLeft + " days left";
     }
 
     public static String getDisplayDate(String rawJsonDate) {
@@ -239,5 +271,25 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         }
 
         mCurrentLocation = location;
+    }
+
+    private Challenge getChallengeFromPosition(int position) {
+        if (position < challenges.size()) {
+            return challenges.get(position);
+        }
+
+        else {
+            return pastChallenges.get(position - challenges.size());
+        }
+    }
+
+    private void removeChallengeAtPosition(int position) {
+        if (position < challenges.size()) {
+            challenges.remove(position);
+        }
+
+        else {
+            pastChallenges.remove(position - challenges.size());
+        }
     }
 }

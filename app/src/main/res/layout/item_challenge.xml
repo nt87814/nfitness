@@ -3,19 +3,22 @@
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:id="@+id/swipeItem">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeItem"
+    app:clickToClose="true">
     <!-- Bottom View Start-->
     <LinearLayout
+        android:tag="Bottom1"
         android:background="#66ddff00"
         android:id="@+id/bottom_wrapper"
-        android:layout_width="160dp"
+        android:layout_width="wrap_content"
         android:weightSum="1"
         android:layout_height="match_parent"
         android:orientation="horizontal">
         <!--What you want to show-->
         <TextView
             android:id="@+id/tvComplete"
-            android:layout_width="match_parent"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             android:clickable="true"
@@ -24,6 +27,25 @@
             android:text="Complete" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:tag="Bottom2"
+        android:id="@+id/bottom_wrapper_2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/delete"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:background="@color/colorRed"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
     <!-- Bottom View End-->
 
     <!-- Surface View Start -->

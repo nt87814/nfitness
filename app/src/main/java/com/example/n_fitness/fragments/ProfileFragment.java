@@ -121,7 +121,7 @@ public class ProfileFragment extends GenericFragment {
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
         completedChallenges = new ArrayList<>();
-        adapter = new ChallengesAdapter(getContext(), completedChallenges, ChallengesAdapter.FragmentScreen.PROFILE);
+        adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProfileChallenges.addItemDecoration(new DividerItemDecoration(rvProfileChallenges.getContext(), DividerItemDecoration.VERTICAL));
@@ -137,6 +137,7 @@ public class ProfileFragment extends GenericFragment {
         query.include(Post.KEY_CATEGORY);
         query.include(Category.KEY_NAME);
         query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
+        query.whereNotEqualTo(Challenge.KEY_DELETED, true);
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
         query.setLimit(20);
         query.addDescendingOrder(Challenge.KEY_COMPLETED);

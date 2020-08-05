@@ -22,6 +22,7 @@ public class Challenge extends ParseObject {
     public static final String KEY_REC = "recipient";
     public static final String KEY_COMPLETED = "completed";
     public static final String KEY_LOCATION = "latlng";
+    public static final String KEY_DELETED = "deleted";
 
     public Post getPost() {
         return (Post) getParseObject(KEY_POST);
@@ -83,4 +84,8 @@ public class Challenge extends ParseObject {
             put(KEY_LOCATION, point);
         }
     }
+
+    public Boolean getDeleted() { return getBoolean(KEY_DELETED); }
+
+    public void setDeleted() { put(KEY_DELETED, true); }
 }
