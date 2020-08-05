@@ -19,9 +19,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.CategorySpinAdapter;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
@@ -55,7 +57,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
 
 
     public ComposeFragment() {
-        // Required empty public constructor
+    // required public empty constructor
     }
 
     @Override
@@ -67,6 +69,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MainActivity.setBtnCreateVisibility(this);
         etDescription = view.findViewById(R.id.etDescription);
         ivPostImage = view.findViewById(R.id.ivPostImage);
         Button btnSubmit = view.findViewById(R.id.btnSubmit);

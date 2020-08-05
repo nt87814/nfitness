@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ExploreMainAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Post;
@@ -28,7 +29,7 @@ import java.util.Map;
 /**
  * Fragment for viewing all of the workouts by category
  */
-public class ExploreFragment extends Fragment {
+public class ExploreFragment extends GenericFragment {
 
     private static final String TAG = "ExploreFragment";
 
@@ -51,6 +52,7 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MainActivity.setBtnCreateVisibility(this);
         RecyclerView rvRootView = view.findViewById(R.id.rvRootView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvRootView.setLayoutManager(layoutManager);

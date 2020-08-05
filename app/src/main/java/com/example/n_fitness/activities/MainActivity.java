@@ -14,8 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.n_fitness.R;
 import com.example.n_fitness.fragments.ChallengesFragment;
 import com.example.n_fitness.fragments.ComposeFragment;
+import com.example.n_fitness.fragments.DetailsFragment;
 import com.example.n_fitness.fragments.ExploreFragment;
+import com.example.n_fitness.fragments.FriendsFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
+import com.example.n_fitness.fragments.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,7 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    public FloatingActionButton btnCreate;
+    public static FloatingActionButton btnCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +82,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadFragment(int id, Fragment fragment) {
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(id, fragment, fragment.toString());
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    public static void setBtnCreateVisibility(Fragment fragment) {
+        if (fragment instanceof DetailsFragment || fragment instanceof UserFragment || fragment instanceof FriendsFragment || fragment instanceof ComposeFragment) {
+            btnCreate.setVisibility(View.GONE);
+        }
+
+        else {
+            btnCreate.setVisibility(View.VISIBLE);
+        }
     }
 }

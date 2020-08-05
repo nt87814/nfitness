@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
@@ -44,6 +45,7 @@ public class UserFragment extends ProfileFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MainActivity.setBtnCreateVisibility(this);
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
 

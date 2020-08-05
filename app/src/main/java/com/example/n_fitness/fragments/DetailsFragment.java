@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
@@ -55,6 +56,7 @@ public class DetailsFragment extends GenericFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MainActivity.setBtnCreateVisibility(this);
         btnLike = view.findViewById(R.id.btnLike);
         tvLikes = view.findViewById(R.id.tvLikes);
         ImageView ivProfileImage = view.findViewById(R.id.ivProfileImage);

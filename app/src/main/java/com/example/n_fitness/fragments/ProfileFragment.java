@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.LoginActivity;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
@@ -79,6 +80,7 @@ public class ProfileFragment extends GenericFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        MainActivity.setBtnCreateVisibility(this);
         ParseUser currentUser = ParseUser.getCurrentUser();
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.n_fitness.R;
+import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.FriendsAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -45,6 +46,7 @@ public class FriendsFragment extends GenericFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MainActivity.setBtnCreateVisibility(this);
         RecyclerView rvFriends = view.findViewById(R.id.rvFriends);
 
         friends = new ArrayList<>();
