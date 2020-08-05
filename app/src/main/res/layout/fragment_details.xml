@@ -54,7 +54,6 @@
         tools:text="2d left" />
 
 
-
     <ImageButton
         android:id="@+id/btnLike"
         android:layout_width="50dp"

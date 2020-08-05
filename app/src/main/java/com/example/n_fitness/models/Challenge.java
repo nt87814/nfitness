@@ -52,7 +52,9 @@ public class Challenge extends ParseObject {
         return getDate(KEY_DEADLINE);
     }
 
-    public void setDeadline(Date date) { put(KEY_DEADLINE, date); }
+    public void setDeadline(Date date) {
+        put(KEY_DEADLINE, date);
+    }
 
     public void setDeadline() {
         Calendar c = Calendar.getInstance();
@@ -85,7 +87,11 @@ public class Challenge extends ParseObject {
         }
     }
 
-    public Boolean getDeleted() { return getBoolean(KEY_DELETED); }
+    public Boolean getDeleted() {
+        return getBoolean(KEY_DELETED);
+    }
 
-    public void setDeleted() { put(KEY_DELETED, true); }
+    public void setDeleted() {
+        put(KEY_DELETED, true);
+    }
 }

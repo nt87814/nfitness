@@ -189,7 +189,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             tvDescription.setText(post.getDescription());
             tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
             if (post.getImage() != null) {
-                    Glide.with(context).load(post.getImage().getUrl()).centerInside().transform(new RoundedCorners(30)).into(ivImage);
+                Glide.with(context).load(post.getImage().getUrl()).centerInside().transform(new RoundedCorners(30)).into(ivImage);
             }
         }
     }
@@ -215,9 +215,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
 
         if (daysLeft == 1) {
             return 1 + " day left";
-        }
-
-        else if (daysLeft < 1) {
+        } else if (daysLeft < 1) {
             return "Deadline passed";
         }
 
@@ -277,9 +275,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     private Challenge getChallengeFromPosition(int position) {
         if (position < challenges.size()) {
             return challenges.get(position);
-        }
-
-        else {
+        } else {
             return pastChallenges.get(position - challenges.size());
         }
     }
@@ -287,9 +283,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     private void removeChallengeAtPosition(int position) {
         if (position < challenges.size()) {
             challenges.remove(position);
-        }
-
-        else {
+        } else {
             pastChallenges.remove(position - challenges.size());
         }
     }

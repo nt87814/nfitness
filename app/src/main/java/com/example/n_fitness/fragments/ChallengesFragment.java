@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.n_fitness.R;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
-import com.example.n_fitness.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

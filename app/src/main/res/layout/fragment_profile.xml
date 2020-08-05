@@ -9,19 +9,18 @@
         android:id="@+id/profile"
         android:clickable="true"
         android:layout_width="110dp"
-        android:layout_height="100dp" >
+        android:layout_height="100dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ivProfileImage"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:padding="4dp"
-        android:layout_marginTop="8dp"
-        tools:src="@tools:sample/avatars"
-        android:layout_centerInParent="true"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ivProfileImage"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:padding="4dp"
+            android:layout_marginTop="8dp"
+            tools:src="@tools:sample/avatars"
+            android:layout_centerInParent="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000" />
 
         <ImageView
             android:id="@+id/icCamera"
@@ -99,7 +98,7 @@
         android:layout_marginTop="8dp"
         android:text="Recently Completed Challenges"
         android:textStyle="bold"
-        android:layout_below="@+id/tvTopLabel"/>
+        android:layout_below="@+id/tvTopLabel" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProfileChallenges"
@@ -107,7 +106,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tvRvLabel"
         android:padding="8dp" />
-
 
 
 </RelativeLayout>

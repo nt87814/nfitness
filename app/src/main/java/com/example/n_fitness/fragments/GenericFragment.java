@@ -56,9 +56,7 @@ public class GenericFragment extends Fragment {
         FragmentTransaction ft;
         if (activity instanceof MainActivity) {
             ft = ((MainActivity) activity).getSupportFragmentManager().beginTransaction();
-        }
-
-        else {
+        } else {
             Toast.makeText(activity, "Could not load fragment", Toast.LENGTH_SHORT).show();
             return;
         }

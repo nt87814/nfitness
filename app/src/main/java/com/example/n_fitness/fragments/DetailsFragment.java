@@ -1,9 +1,5 @@
 package com.example.n_fitness.fragments;
 
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -17,14 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.n_fitness.R;
-import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
@@ -109,7 +102,7 @@ public class DetailsFragment extends GenericFragment {
         }
 
         if (post.getImage() != null) {
-            Glide.with(getContext()).load(post.getImage().getUrl()).override(750,350).transform(new RoundedCorners(40)).into(ivImage);
+            Glide.with(getContext()).load(post.getImage().getUrl()).override(750, 350).transform(new RoundedCorners(40)).into(ivImage);
         }
         tvDescription.setText(post.getDescription());
         setTvLikes();
