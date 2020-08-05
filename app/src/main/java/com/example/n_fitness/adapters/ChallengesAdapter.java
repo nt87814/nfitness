@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.MainActivity;
@@ -188,7 +189,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             tvDescription.setText(post.getDescription());
             tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
             if (post.getImage() != null) {
-                    Glide.with(context).load(post.getImage().getUrl()).centerInside().into(ivImage);
+                    Glide.with(context).load(post.getImage().getUrl()).centerInside().transform(new RoundedCorners(30)).into(ivImage);
             }
         }
     }
