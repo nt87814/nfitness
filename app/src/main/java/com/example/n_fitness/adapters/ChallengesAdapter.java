@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.parse.ParseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -179,7 +181,8 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             Post post = challenge.getPost();
             switch (fragmentScreen) {
                 case HOME:
-                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));
+//                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));
+                    tvDeadline.setText(getRelativeTimeAgo(challenge.getDeadline().toString()));
                     break;
                 case PROFILE:
                     swipeLayout.setSwipeEnabled(false);
@@ -194,32 +197,27 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
         }
     }
 
-    public static String getTimeLeft(String rawJsonDate) {
-        if (rawJsonDate == null) {
-            return "NULL";
+    public static String getRelativeTimeAgo(String rawJsonDate) {
+        if (rawJsonDate  == null) {
+            return "NULL!!!!!";
         }
 
         SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         sf.setLenient(true);
 
-        long diff = 0;
+        String relativeDate = "";
         try {
-            Date date1 = sf.parse(rawJsonDate);
-            Date date2 = new Date(System.currentTimeMillis());
-            diff = date1.getTime() - date2.getTime();
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            if (dateMillis < System.currentTimeMillis()) {
+                return "Deadline passed";
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        int daysLeft = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-
-        if (daysLeft == 1) {
-            return 1 + " day left";
-        } else if (daysLeft < 1) {
-            return "Deadline passed";
-        }
-
-        return daysLeft + " days left";
+        return relativeDate;
     }
 
     public static String getDisplayDate(String rawJsonDate) {

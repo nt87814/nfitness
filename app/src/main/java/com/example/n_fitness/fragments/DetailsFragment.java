@@ -25,7 +25,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
-import static com.example.n_fitness.adapters.ChallengesAdapter.getTimeLeft;
+import static com.example.n_fitness.adapters.ChallengesAdapter.getRelativeTimeAgo;
 
 /**
  * Fragment for viewing details on a challenge
@@ -82,7 +82,7 @@ public class DetailsFragment extends GenericFragment {
             case HOME:
                 challenge = bundle.getParcelable(getContext().getResources().getString(R.string.challenge));
                 post = challenge.getPost();
-                tvTimestamp.setText(getTimeLeft(challenge.getDeadline().toString()));
+                tvTimestamp.setText(getRelativeTimeAgo(challenge.getDeadline().toString()));
                 Glide.with(getContext()).load(challenge.getFrom().getParseFile("image").getUrl()).into(ivProfileImage);
                 tvUsername.setText(challenge.getFrom().getUsername());
                 ivProfileImage.setOnClickListener(view14 -> goUserFragment(challenge.getFrom()));
