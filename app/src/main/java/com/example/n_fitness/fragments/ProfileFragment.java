@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +53,6 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends GenericFragment {
 
     private static final String TAG = "ProfileFragment";
-    protected List<Challenge> completedChallenges;
     protected ChallengesAdapter adapter;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
     private RelativeLayout profile;
@@ -122,15 +122,15 @@ public class ProfileFragment extends GenericFragment {
         });
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
-        completedChallenges = new ArrayList<>();
+        List<Challenge> completedChallenges = new ArrayList<>();
         adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProfileChallenges.addItemDecoration(new DividerItemDecoration(rvProfileChallenges.getContext(), DividerItemDecoration.VERTICAL));
-        query();
+        query(completedChallenges);
     }
 
-    protected void query() {
+    protected void query(List<Challenge> completedChallenges) {
         ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
         query.include(Challenge.KEY_FROM);
         query.include(Challenge.KEY_REC);
@@ -141,7 +141,7 @@ public class ProfileFragment extends GenericFragment {
         query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
         query.whereNotEqualTo(Challenge.KEY_DELETED, true);
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
-        query.setLimit(20);
+        query.setLimit(15);
         query.addDescendingOrder(Challenge.KEY_COMPLETED);
 
         query.findInBackground((challenges, e) -> {
@@ -152,7 +152,7 @@ public class ProfileFragment extends GenericFragment {
 
             adapter.clear();
             adapter.addAll(challenges);
-            tvTop.setText(getTopCategory());
+            tvTop.setText(getTopCategory(completedChallenges));
         });
     }
 
@@ -162,7 +162,7 @@ public class ProfileFragment extends GenericFragment {
         getActivity().finish();
     }
 
-    protected String getTopCategory() {
+    public static String getTopCategory(List<Challenge> completedChallenges) {
         String topCategory = "";
 
         if (completedChallenges.isEmpty()) {

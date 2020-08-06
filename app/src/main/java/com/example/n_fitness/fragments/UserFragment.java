@@ -24,6 +24,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment for viewing other users' profiles
@@ -67,15 +68,15 @@ public class UserFragment extends ProfileFragment {
         tvTop = view.findViewById(R.id.tvTop);
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
-        completedChallenges = new ArrayList<>();
+        List<Challenge> completedChallenges = new ArrayList<>();
         adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.OTHER_PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
-        query();
+        query(completedChallenges);
     }
 
     @Override
-    public void query() {
+    public void query(List<Challenge> completedChallenges) {
         ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
         query.include(Challenge.KEY_FROM);
         query.include(Challenge.KEY_REC);
@@ -96,7 +97,7 @@ public class UserFragment extends ProfileFragment {
 
             adapter.clear();
             adapter.addAll(challenges);
-            tvTop.setText(getTopCategory());
+            tvTop.setText(getTopCategory(completedChallenges));
         });
     }
 }
