@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
@@ -57,7 +56,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
 
 
     public ComposeFragment() {
-    // required public empty constructor
+        // required public empty constructor
     }
 
     @Override

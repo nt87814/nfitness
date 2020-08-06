@@ -32,11 +32,9 @@ import com.parse.ParseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import permissions.dispatcher.NeedsPermission;
 
@@ -186,9 +184,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                     tvDeadline.setText(getRelativeTimeAgo(challenge.getDeadline().toString()));
                     if (challenge.getFrom().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                         tvFrom.setText("My challenge");
-                    }
-
-                    else {
+                    } else {
                         tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
                     }
                     break;
@@ -198,9 +194,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                     //TODO REDUNDANT
                     if (challenge.getFrom().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                         tvFrom.setText("My challenge");
-                    }
-
-                    else {
+                    } else {
                         tvFrom.setText("Challenged by " + challenge.getFrom().getUsername());
                     }
                     break;
@@ -218,7 +212,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
     }
 
     public static String getRelativeTimeAgo(String rawJsonDate) {
-        if (rawJsonDate  == null) {
+        if (rawJsonDate == null) {
             return "NULL!!!!!";
         }
 

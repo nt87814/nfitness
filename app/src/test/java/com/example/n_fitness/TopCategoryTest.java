@@ -1,13 +1,10 @@
 package com.example.n_fitness;
 
-import android.widget.Toast;
-
 import com.example.n_fitness.fragments.ProfileFragment;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import org.junit.Test;
 
@@ -18,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * local unit test, which will execute on the development machine (host).
- *
+ * <p>
  * tests the correct top category given a list of challenges
  */
 public class TopCategoryTest {

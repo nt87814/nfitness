@@ -92,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public static void setBtnCreateVisibility(Fragment fragment) {
         if (fragment instanceof DetailsFragment || fragment instanceof UserFragment || fragment instanceof FriendsFragment || fragment instanceof ComposeFragment) {
             btnCreate.setVisibility(View.GONE);
-        }
-
-        else {
+        } else {
             btnCreate.setVisibility(View.VISIBLE);
         }
     }
