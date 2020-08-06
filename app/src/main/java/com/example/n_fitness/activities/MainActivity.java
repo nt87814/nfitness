@@ -19,12 +19,15 @@ import com.example.n_fitness.fragments.ExploreFragment;
 import com.example.n_fitness.fragments.FriendsFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
 import com.example.n_fitness.fragments.UserFragment;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import static android.R.color.*;
+
 /**
  * Activity for bottom navigation view
- * <p>
+ *
  * This activity is used to open different fragments from the bottom navigation view
  */
 public class MainActivity extends AppCompatActivity {
@@ -79,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
             }
         });
+
+//        BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.action_home);
+//        badge.setVisible(true);
+//        badge.setNumber(2);
     }
 
     public void loadFragment(int id, Fragment fragment) {

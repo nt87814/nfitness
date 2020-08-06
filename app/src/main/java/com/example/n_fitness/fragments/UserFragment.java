@@ -83,6 +83,7 @@ public class UserFragment extends ProfileFragment {
         query.include(Challenge.KEY_POST);
         query.include(Challenge.KEY_COMPLETED);
         query.include(Post.KEY_CATEGORY);
+        query.include(Post.KEY_IMAGE);
         query.include(Category.KEY_NAME);
         query.whereEqualTo(Challenge.KEY_REC, user);
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);

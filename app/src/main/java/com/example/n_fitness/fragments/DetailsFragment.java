@@ -75,6 +75,7 @@ public class DetailsFragment extends GenericFragment {
         ChallengesAdapter.FragmentScreen fragmentScreen = ChallengesAdapter.FragmentScreen.valueOf(bundle.getString(getContext().getResources().getString(R.string.screenFrom)));
         switch (fragmentScreen) {
             case PROFILE:
+            case OTHER_PROFILE:
                 btnComplete.setVisibility(View.GONE);
                 tvTimestamp.setVisibility(View.GONE);
                 challenge = bundle.getParcelable(getContext().getResources().getString(R.string.challenge));
