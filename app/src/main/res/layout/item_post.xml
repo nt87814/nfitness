@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
-            android:scaleType="fitXY"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView

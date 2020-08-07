@@ -72,7 +72,7 @@ public class ExploreRowAdapter extends RecyclerView.Adapter<ExploreRowAdapter.Vi
         public void bind(Post post) {
             ParseFile image = post.getImage();
             if (image != null) {
-                Glide.with(mContext).load(image.getUrl()).centerInside().into(ivPost);
+                Glide.with(mContext).load(image.getUrl()).centerCrop().into(ivPost);
             }
             tvTitle.setText(post.getDescription());
 

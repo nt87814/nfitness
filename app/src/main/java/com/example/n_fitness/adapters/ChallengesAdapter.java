@@ -208,7 +208,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             }
             tvDescription.setText(post.getDescription());
             if (post.getImage() != null) {
-                Glide.with(context).load(post.getImage().getUrl()).transform(new FitCenter(), new RoundedCorners(50)).into(ivImage);
+                Glide.with(context).load(post.getImage().getUrl()).transform(new CenterCrop(), new RoundedCorners(50)).into(ivImage);
             }
         }
     }
