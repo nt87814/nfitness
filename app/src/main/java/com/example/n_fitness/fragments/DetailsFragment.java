@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,6 +97,7 @@ public class DetailsFragment extends GenericFragment {
                 btnComplete.setOnClickListener(view12 -> {
                     challenge.setCompleted();
                     challenge.saveInBackground();
+                    Toast.makeText(getContext(), "Challenge completed!", Toast.LENGTH_SHORT).show();
                 });
                 btnAdd.setVisibility(View.GONE);
                 break;

@@ -132,7 +132,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         query.include(Category.KEY_NAME);
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
         query.setLimit(20);
-        query.orderByDescending(Post.KEY_CREATED_AT);
+        query.orderByDescending(Challenge.KEY_COMPLETED);
 
         query.findInBackground((challenges, e) -> {
             if (e != null) {

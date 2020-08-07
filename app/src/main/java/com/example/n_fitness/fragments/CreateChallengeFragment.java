@@ -103,6 +103,8 @@ public class CreateChallengeFragment extends DialogFragment {
                 for (ContactChip chip : contactsSelected) {
                     addChallenge(chip.getUser());
                 }
+                Toast.makeText(getContext(), "Challenge Submitted!", Toast.LENGTH_SHORT).show();
+//                dismiss(); //TODO
             }
         });
 
