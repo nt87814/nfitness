@@ -55,7 +55,7 @@ public class ProfileFragment extends GenericFragment {
     protected ChallengesAdapter adapter;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
     private RelativeLayout profile;
-
+    private ParseUser otherUser;
 
     protected ImageView ivProfileImage;
     protected TextView tvUsername;
@@ -66,6 +66,7 @@ public class ProfileFragment extends GenericFragment {
 
     private File photoFile;
     private static final String PHOTO_FILE_NAME = "photo.jpg";
+    Bundle bundle;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -74,43 +75,65 @@ public class ProfileFragment extends GenericFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        bundle = this.getArguments();
+        if (bundle != null) {
+            otherUser = (ParseUser) bundle.get("user");
+        }
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        MainActivity.setBtnCreateVisibility(this);
-        ParseUser currentUser = ParseUser.getCurrentUser();
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         profile = view.findViewById(R.id.profile);
         TextView tvFriends = view.findViewById(R.id.tvFriends);
+        ParseFile profileImage;
+        btnLogout = view.findViewById(R.id.btnLogout);
+        List<Challenge> completedChallenges = new ArrayList<>();
+        // This is another user profile
+        if (bundle != null) {
+            MainActivity.btnCreate.setVisibility(View.GONE);
 
-        tvUsername.setText(currentUser.getUsername());
-        ParseFile profileImage = currentUser.getParseFile("image");
+            tvUsername.setText(otherUser.getUsername());
+            profileImage = otherUser.getParseFile("image");
+            btnLogout.setVisibility(View.GONE);
+            adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.OTHER_PROFILE);
+            queryUser(completedChallenges);
+            ImageView icCamera = view.findViewById(R.id.icCamera);
+            icCamera.setVisibility(View.GONE);
+        }
+
+        //This is the logged in user's profile
+        else {
+            MainActivity.btnCreate.setVisibility(View.VISIBLE);
+            ParseUser currentUser = ParseUser.getCurrentUser();
+
+            tvUsername.setText(currentUser.getUsername());
+            profileImage = currentUser.getParseFile("image");
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ParseUser.logOut();
+                    goLoginActivity();
+                }
+            });
+            profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    launchCamera();
+                }
+            });
+            adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.PROFILE);
+            query(completedChallenges);
+        }
+
         if (profileImage != null) {
             Glide.with(getContext()).load(profileImage.getUrl()).into(ivProfileImage);
         }
 
-        btnLogout = view.findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                goLoginActivity();
-            }
-        });
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchCamera();
-            }
-        });
-
         tvTopLabel = view.findViewById(R.id.tvTopLabel);
         tvTop = view.findViewById(R.id.tvTop);
-
         tvFriends.setText("friends");
         tvFriends.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,12 +144,10 @@ public class ProfileFragment extends GenericFragment {
         });
 
         rvProfileChallenges = view.findViewById(R.id.rvProfileChallenges);
-        List<Challenge> completedChallenges = new ArrayList<>();
-        adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.PROFILE);
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProfileChallenges.addItemDecoration(new DividerItemDecoration(rvProfileChallenges.getContext(), DividerItemDecoration.VERTICAL));
-        query(completedChallenges);
+
     }
 
     protected void query(List<Challenge> completedChallenges) {
@@ -141,6 +162,32 @@ public class ProfileFragment extends GenericFragment {
         query.whereNotEqualTo(Challenge.KEY_DELETED, true);
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
         query.setLimit(15);
+        query.addDescendingOrder(Challenge.KEY_COMPLETED);
+
+        query.findInBackground((challenges, e) -> {
+            if (e != null) {
+                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            adapter.clear();
+            adapter.addAll(challenges);
+            tvTop.setText(getTopCategory(completedChallenges));
+        });
+    }
+
+    public void queryUser(List<Challenge> completedChallenges) {
+        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
+        query.include(Challenge.KEY_FROM);
+        query.include(Challenge.KEY_REC);
+        query.include(Challenge.KEY_POST);
+        query.include(Challenge.KEY_COMPLETED);
+        query.include(Post.KEY_CATEGORY);
+        query.include(Post.KEY_IMAGE);
+        query.include(Category.KEY_NAME);
+        query.whereEqualTo(Challenge.KEY_REC, otherUser);
+        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
+        query.setLimit(20);
         query.addDescendingOrder(Challenge.KEY_COMPLETED);
 
         query.findInBackground((challenges, e) -> {

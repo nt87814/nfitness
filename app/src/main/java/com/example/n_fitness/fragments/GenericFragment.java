@@ -28,20 +28,20 @@ public class GenericFragment extends Fragment {
     }
 
     public void goUserFragment(ParseUser user) {
-        UserFragment userFragment = new UserFragment();
+        ProfileFragment profileFragment = new ProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("user", user);
-        userFragment.setArguments(bundle);
-        switchFragment(userFragment);
+        profileFragment.setArguments(bundle);
+        switchFragment(profileFragment);
     }
 
     public static void goUserFragment(ParseUser user, Activity activity) {
-        UserFragment userFragment = new UserFragment();
+        ProfileFragment profileFragment = new ProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("user", user);
-        userFragment.setArguments(bundle);
+        profileFragment.setArguments(bundle);
         if (activity instanceof MainActivity) {
-            switchFragment(userFragment, (MainActivity) activity);
+            switchFragment(profileFragment, (MainActivity) activity);
         }
 
     }

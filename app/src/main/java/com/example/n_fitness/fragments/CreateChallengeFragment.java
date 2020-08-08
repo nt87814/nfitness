@@ -96,16 +96,13 @@ public class CreateChallengeFragment extends DialogFragment {
             }
         });
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<ContactChip> contactsSelected = (List<ContactChip>) chipsInput.getSelectedChipList();
-                for (ContactChip chip : contactsSelected) {
-                    addChallenge(chip.getUser());
-                }
-                Toast.makeText(getContext(), "Challenge Submitted!", Toast.LENGTH_SHORT).show();
-//                dismiss(); //TODO
+        btnConfirm.setOnClickListener(btnConfirmView -> {
+            List<ContactChip> contactsSelected = (List<ContactChip>) chipsInput.getSelectedChipList();
+            for (ContactChip chip : contactsSelected) {
+                addChallenge(chip.getUser());
             }
+            Toast.makeText(getContext(), "Challenge Submitted!", Toast.LENGTH_SHORT).show();
+            dismiss();
         });
 
     }
@@ -140,11 +137,6 @@ public class CreateChallengeFragment extends DialogFragment {
         challenge.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e != null) {
-                    Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Challenge Submitted!", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }

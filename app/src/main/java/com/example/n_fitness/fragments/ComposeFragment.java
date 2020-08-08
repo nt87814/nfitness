@@ -76,7 +76,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
         Spinner spinner = view.findViewById(R.id.sCategories);
         spinner.setOnItemSelectedListener(this);
 
-        btnSubmit.setOnClickListener(view1 -> {
+        btnSubmit.setOnClickListener(onClick -> {
             String description = etDescription.getText().toString();
             if (description.isEmpty()) {
                 Toast.makeText(getContext(), "Description cannot be empty", Toast.LENGTH_SHORT).show();
@@ -91,12 +91,7 @@ public class ComposeFragment extends GenericFragment implements AdapterView.OnIt
             savePost(description, currentUser);
         });
 
-        btnGetImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGallery();
-            }
-        });
+        btnGetImage.setOnClickListener(onClick -> openGallery());
 
         allCategories = new ArrayList<>();
         adapter = new CategorySpinAdapter(getActivity(), android.R.layout.simple_spinner_item, allCategories);

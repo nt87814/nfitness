@@ -83,8 +83,8 @@ public class DetailsFragment extends GenericFragment {
                 post = challenge.getPost();
                 Glide.with(getContext()).load(challenge.getFrom().getParseFile("image").getUrl()).into(ivProfileImage);
                 tvUsername.setText(challenge.getFrom().getUsername());
-                ivProfileImage.setOnClickListener(view14 -> goUserFragment(challenge.getFrom()));
-                tvUsername.setOnClickListener(view13 -> goUserFragment(challenge.getFrom()));
+                ivProfileImage.setOnClickListener(onClick -> goUserFragment(challenge.getFrom()));
+                tvUsername.setOnClickListener(onClick -> goUserFragment(challenge.getFrom()));
                 break;
             case HOME:
                 challenge = bundle.getParcelable(getContext().getResources().getString(R.string.challenge));
@@ -92,9 +92,9 @@ public class DetailsFragment extends GenericFragment {
                 tvTimestamp.setText(getRelativeTimeAgo(challenge.getDeadline().toString()));
                 Glide.with(getContext()).load(challenge.getFrom().getParseFile("image").getUrl()).into(ivProfileImage);
                 tvUsername.setText(challenge.getFrom().getUsername());
-                ivProfileImage.setOnClickListener(view14 -> goUserFragment(challenge.getFrom()));
-                tvUsername.setOnClickListener(view13 -> goUserFragment(challenge.getFrom()));
-                btnComplete.setOnClickListener(view12 -> {
+                ivProfileImage.setOnClickListener(onClick -> goUserFragment(challenge.getFrom()));
+                tvUsername.setOnClickListener(onClick -> goUserFragment(challenge.getFrom()));
+                btnComplete.setOnClickListener(onClick -> {
                     challenge.setCompleted();
                     challenge.saveInBackground();
                     Toast.makeText(getContext(), "Challenge completed!", Toast.LENGTH_SHORT).show();
@@ -117,7 +117,7 @@ public class DetailsFragment extends GenericFragment {
         setTvLikes();
         setActiveHeart();
 
-        btnChallenge.setOnClickListener(view1 -> {
+        btnChallenge.setOnClickListener(onClick -> {
             Challenge newChallenge = new Challenge();
             newChallenge.setPost(post);
 
