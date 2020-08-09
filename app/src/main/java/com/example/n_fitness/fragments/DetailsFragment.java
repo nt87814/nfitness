@@ -96,6 +96,14 @@ public class DetailsFragment extends GenericFragment {
                 tvUsername.setOnClickListener(onClick -> goUserFragment(challenge.getFrom()));
                 btnComplete.setOnClickListener(onClick -> {
                     challenge.setCompleted();
+                    if (challenge.getCompleted().compareTo(challenge.getDeadline()) > 0) {
+                        challenge.setWon(false);
+                    }
+
+                    else {
+                        challenge.setWon(true);
+                    }
+
                     challenge.saveInBackground();
                     Toast.makeText(getContext(), "Challenge completed!", Toast.LENGTH_SHORT).show();
                 });

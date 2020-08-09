@@ -62,17 +62,19 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends GenericFragment {
 
     private static final String TAG = "ProfileFragment";
-    protected ChallengesAdapter adapter;
+    private ChallengesAdapter adapter;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
     private RelativeLayout profile;
     private ParseUser otherUser;
 
-    protected ImageView ivProfileImage;
-    protected TextView tvUsername;
-    protected Button btnLogout;
-    protected RecyclerView rvProfileChallenges;
-    protected TextView tvTop;
-    protected TextView tvTopLabel;
+    private ImageView ivProfileImage;
+    private TextView tvUsername;
+    private Button btnLogout;
+    private RecyclerView rvProfileChallenges;
+    private TextView tvTop;
+    private TextView tvTopLabel;
+    private TextView tvWeek;
+    private TextView tvWon;
 
     private File photoFile;
     private static final String PHOTO_FILE_NAME = "photo.jpg";
@@ -103,6 +105,8 @@ public class ProfileFragment extends GenericFragment {
         ParseFile profileImage;
         btnLogout = view.findViewById(R.id.btnLogout);
         tvStreak = view.findViewById(R.id.tvStreak);
+        tvWeek = view.findViewById(R.id.tvWeek);
+        tvWon = view.findViewById(R.id.tvWon);
         completedChallenges = new ArrayList<>();
         // This is another user profile
         if (bundle != null) {
@@ -113,6 +117,8 @@ public class ProfileFragment extends GenericFragment {
             btnLogout.setVisibility(View.GONE);
             adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.OTHER_PROFILE);
             queryList(otherUser);
+            queryPastWeek(otherUser);
+            queryWon(otherUser);
             ImageView icCamera = view.findViewById(R.id.icCamera);
             icCamera.setVisibility(View.GONE);
         }
@@ -139,6 +145,8 @@ public class ProfileFragment extends GenericFragment {
             });
             adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.PROFILE);
             queryList(ParseUser.getCurrentUser());
+            queryPastWeek(ParseUser.getCurrentUser());
+            queryWon(ParseUser.getCurrentUser());
         }
 
         if (profileImage != null) {
@@ -324,5 +332,45 @@ public class ProfileFragment extends GenericFragment {
             streak++;
         }
         return streak;
+    }
+
+    private void queryPastWeek(ParseUser user) {
+        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
+        query.include(Challenge.KEY_REC);
+        query.include(Challenge.KEY_COMPLETED);
+        query.whereEqualTo(Challenge.KEY_REC, user);
+        query.whereNotEqualTo(Challenge.KEY_DELETED, true);
+        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -7); // Subtracting 7 days
+        query.whereGreaterThan(Challenge.KEY_COMPLETED, c.getTime());
+
+        query.findInBackground((challenges, e) -> {
+            if (e != null) {
+                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            tvWeek.setText("" + challenges.size());
+        });
+    }
+
+    private void queryWon(ParseUser user) {
+        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
+        query.include(Challenge.KEY_REC);
+        query.include(Challenge.KEY_WON);
+        query.whereEqualTo(Challenge.KEY_WON, true);
+        query.whereEqualTo(Challenge.KEY_REC, user);
+        query.whereNotEqualTo(Challenge.KEY_DELETED, true);
+        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
+
+        query.findInBackground((challenges, e) -> {
+            if (e != null) {
+                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            tvWon.setText("" + challenges.size());
+        });
     }
 }

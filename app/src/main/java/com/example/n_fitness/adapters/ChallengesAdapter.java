@@ -154,6 +154,13 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
                     if (position != RecyclerView.NO_POSITION) {
                         Challenge challenge = getChallengeFromPosition(position);
                         challenge.setCompleted();
+                        if (challenge.getCompleted().compareTo(challenge.getDeadline()) > 0) {
+                            challenge.setWon(false);
+                        }
+
+                        else {
+                            challenge.setWon(true);
+                        }
                         challenge.setLocation(mCurrentLocation);
                         challenge.saveInBackground();
                         removeChallengeAtPosition(position);

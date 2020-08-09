@@ -70,7 +70,7 @@
         android:layout_toEndOf="@+id/profile"
         android:clickable="true"
         android:textColor="@color/colorBlue"
-        tools:text="100 friends" />
+        tools:text="friends" />
 
     <TextView
         android:id="@+id/tvTopLabel"
@@ -92,23 +92,75 @@
         tools:text="category" />
 
     <TextView
+        android:id="@+id/tvStreak"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTopLabel"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        tools:text="10" />
+
+    <TextView
         android:id="@+id/tvStreakLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTopLabel"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="8dp"
-        android:text="Current Streak: "
+        android:layout_below="@+id/tvStreak"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="0dp"
+        android:text="Streak"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvStreak"
+        android:id="@+id/tvWeek"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTopLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="81dp"
+        android:layout_marginLeft="134dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/tvStreak"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvWeekLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTopLabel"
+        android:layout_below="@+id/tvWeek"
         android:layout_toEndOf="@id/tvStreakLabel"
-        android:layout_marginTop="8dp"
-        tools:text="number" />
+        android:layout_marginLeft="82dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Past Week"
+        />
+
+    <TextView
+        android:id="@+id/tvWon"
+        android:layout_width="51dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTopLabel"
+        android:layout_marginStart="67dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/tvWeek"
+        android:gravity="center"
+        android:text="2"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvWonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/tvWeekLabel"
+        android:layout_below="@+id/tvWon"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="70dp"
+        android:textStyle="bold"
+        android:text="Won"
+        />
 
     <TextView
         android:id="@+id/tvRvLabel"
@@ -119,6 +171,7 @@
         android:text="Recently Completed Challenges"
         android:textStyle="bold"
         android:layout_below="@+id/tvStreakLabel" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProfileChallenges"
