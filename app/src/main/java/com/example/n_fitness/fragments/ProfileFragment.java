@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.anton46.stepsview.StepsView;
 import com.bumptech.glide.Glide;
 import com.example.n_fitness.R;
 import com.example.n_fitness.activities.LoginActivity;
@@ -32,11 +33,16 @@ import com.example.n_fitness.adapters.ChallengesAdapter;
 import com.example.n_fitness.models.Category;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
+import com.kofigyan.stateprogressbar.StateProgressBar;
+import com.library.NavigationBar;
+import com.library.NvTab;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.repsly.library.timelineview.TimelineView;
 
 import java.io.File;
 import java.time.temporal.ChronoUnit;
@@ -71,6 +77,8 @@ public class ProfileFragment extends GenericFragment {
     private File photoFile;
     private static final String PHOTO_FILE_NAME = "photo.jpg";
     Bundle bundle;
+    TextView tvStreak;
+    List<Challenge> completedChallenges;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -94,7 +102,8 @@ public class ProfileFragment extends GenericFragment {
         TextView tvFriends = view.findViewById(R.id.tvFriends);
         ParseFile profileImage;
         btnLogout = view.findViewById(R.id.btnLogout);
-        List<Challenge> completedChallenges = new ArrayList<>();
+        tvStreak = view.findViewById(R.id.tvStreak);
+        completedChallenges = new ArrayList<>();
         // This is another user profile
         if (bundle != null) {
             MainActivity.btnCreate.setVisibility(View.GONE);
@@ -103,7 +112,7 @@ public class ProfileFragment extends GenericFragment {
             profileImage = otherUser.getParseFile("image");
             btnLogout.setVisibility(View.GONE);
             adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.OTHER_PROFILE);
-            queryUser(completedChallenges);
+            queryList(otherUser);
             ImageView icCamera = view.findViewById(R.id.icCamera);
             icCamera.setVisibility(View.GONE);
         }
@@ -129,7 +138,7 @@ public class ProfileFragment extends GenericFragment {
                 }
             });
             adapter = new ChallengesAdapter(getContext(), completedChallenges, null, ChallengesAdapter.FragmentScreen.PROFILE);
-            query(completedChallenges);
+            queryList(ParseUser.getCurrentUser());
         }
 
         if (profileImage != null) {
@@ -151,10 +160,9 @@ public class ProfileFragment extends GenericFragment {
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProfileChallenges.addItemDecoration(new DividerItemDecoration(rvProfileChallenges.getContext(), DividerItemDecoration.VERTICAL));
-        calculateWinStreak();
     }
 
-    protected void query(List<Challenge> completedChallenges) {
+    protected void queryList(ParseUser user) {
         ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
         query.include(Challenge.KEY_FROM);
         query.include(Challenge.KEY_REC);
@@ -162,7 +170,7 @@ public class ProfileFragment extends GenericFragment {
         query.include(Challenge.KEY_COMPLETED);
         query.include(Post.KEY_CATEGORY);
         query.include(Category.KEY_NAME);
-        query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
+        query.whereEqualTo(Challenge.KEY_REC, user);
         query.whereNotEqualTo(Challenge.KEY_DELETED, true);
         query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
         query.setLimit(15);
@@ -177,32 +185,7 @@ public class ProfileFragment extends GenericFragment {
             adapter.clear();
             adapter.addAll(challenges);
             tvTop.setText(getTopCategory(completedChallenges));
-        });
-    }
-
-    public void queryUser(List<Challenge> completedChallenges) {
-        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
-        query.include(Challenge.KEY_FROM);
-        query.include(Challenge.KEY_REC);
-        query.include(Challenge.KEY_POST);
-        query.include(Challenge.KEY_COMPLETED);
-        query.include(Post.KEY_CATEGORY);
-        query.include(Post.KEY_IMAGE);
-        query.include(Category.KEY_NAME);
-        query.whereEqualTo(Challenge.KEY_REC, otherUser);
-        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
-        query.setLimit(20);
-        query.addDescendingOrder(Challenge.KEY_COMPLETED);
-
-        query.findInBackground((challenges, e) -> {
-            if (e != null) {
-                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            adapter.clear();
-            adapter.addAll(challenges);
-            tvTop.setText(getTopCategory(completedChallenges));
+            tvStreak.setText("" + calculateStreak());
         });
     }
 
@@ -311,49 +294,35 @@ public class ProfileFragment extends GenericFragment {
         }
     }
 
-    private void calculateWinStreak() {
-        List<Challenge> challengesWon = new ArrayList<>();
-        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
-        query.include(Challenge.KEY_REC);
-        query.include(Challenge.KEY_COMPLETED);
-        query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
-        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
-        query.addDescendingOrder(Challenge.KEY_COMPLETED);
+    private Integer calculateStreak() {
+        if (completedChallenges.isEmpty()) {
+            return null;
+        }
 
-        query.findInBackground((challenges, e) -> {
-            if (e != null) {
-                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            challengesWon.addAll(challenges);
-            if (challengesWon.isEmpty()) {
-                return;
-            }
+        ArrayList<Integer> dayDiffs = new ArrayList<>();
 
-            ArrayList<Integer> dayDiffs = new ArrayList<Integer>();
+        Calendar currentDay = Calendar.getInstance();
+        for (Challenge c: completedChallenges) {
+            Calendar cal = Calendar. getInstance();
+            cal.setTime(c.getCompleted());
+            dayDiffs.add((int) Math.abs(ChronoUnit.DAYS.between(currentDay.toInstant(), cal.toInstant())));
+        }
 
-            Calendar currentDay = Calendar.getInstance();
-            for (Challenge c: challengesWon) {
-                Calendar cal = Calendar. getInstance();
-                cal.setTime(c.getCompleted());
-                dayDiffs.add((int) Math.abs(ChronoUnit.DAYS.between(currentDay.toInstant(), cal.toInstant())));
-            }
+        int streak = 0;
+        if (dayDiffs.get(0) == 1) {
+            streak++;
+        }
 
-            int streak = 0;
-            if (dayDiffs.get(0) == 1) {
+        for (int i = 0; i < dayDiffs.size(); i++) {
+
+            if (i > 0 && dayDiffs.get(i) != dayDiffs.get(i - 1) && streak + 1 == dayDiffs.get(i)) {
                 streak++;
             }
-            for (int i = 0; i < dayDiffs.size(); i++) {
+        }
 
-                if (i > 0 && dayDiffs.get(i) != dayDiffs.get(i - 1) && streak + 1 == dayDiffs.get(i)) {
-                    streak++;
-                }
-                Log.e(TAG, "index: " + i + ", value: " + dayDiffs.get(i));
-            }
-            if (dayDiffs.get(0) == 0) {     // User has completed a challenge today, if not they still can
-                streak++;
-            }
-            Log.e(TAG, "Streak: " + streak);
-        });
+        if (dayDiffs.get(0) == 0) {     // User has completed a challenge today, if not they still can
+            streak++;
+        }
+        return streak;
     }
 }

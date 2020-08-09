@@ -79,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.action_home);
-//        badge.setVisible(true);
-//        badge.setNumber(2);
     }
 
     public void loadFragment(int id, Fragment fragment) {

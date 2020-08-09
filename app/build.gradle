@@ -62,4 +62,9 @@ dependencies {
     implementation "org.permissionsdispatcher:permissionsdispatcher:$permissionDispatcherVersion"
     annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:$permissionDispatcherVersion"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'pl.hypeapp:materialtimelineview:1.1'
+    compile 'com.anton46:stepsview:0.0.2'
+    compile 'com.github.repsly:TimelineView:v1.2'
+    implementation 'com.kofigyan.stateprogressbar:stateprogressbar:1.0.0'
+    compile 'com.ashutosh.progress-nevigation-bar:library:1.0.0'
 }
