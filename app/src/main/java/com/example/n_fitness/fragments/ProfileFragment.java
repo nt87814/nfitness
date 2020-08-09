@@ -39,7 +39,10 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +50,8 @@ import java.util.Map;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Fragment for viewing current user's profile
+ * Fragment for viewing current user's profile or other user's profile
+ * with the presence of "user" key in bundle
  */
 public class ProfileFragment extends GenericFragment {
 
@@ -147,7 +151,7 @@ public class ProfileFragment extends GenericFragment {
         rvProfileChallenges.setAdapter(adapter);
         rvProfileChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProfileChallenges.addItemDecoration(new DividerItemDecoration(rvProfileChallenges.getContext(), DividerItemDecoration.VERTICAL));
-
+        calculateWinStreak();
     }
 
     protected void query(List<Challenge> completedChallenges) {
@@ -305,5 +309,51 @@ public class ProfileFragment extends GenericFragment {
         public int get() {
             return value;
         }
+    }
+
+    private void calculateWinStreak() {
+        List<Challenge> challengesWon = new ArrayList<>();
+        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
+        query.include(Challenge.KEY_REC);
+        query.include(Challenge.KEY_COMPLETED);
+        query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
+        query.whereNotEqualTo(Challenge.KEY_COMPLETED, null);
+        query.addDescendingOrder(Challenge.KEY_COMPLETED);
+
+        query.findInBackground((challenges, e) -> {
+            if (e != null) {
+                Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            challengesWon.addAll(challenges);
+            if (challengesWon.isEmpty()) {
+                return;
+            }
+
+            ArrayList<Integer> dayDiffs = new ArrayList<Integer>();
+
+            Calendar currentDay = Calendar.getInstance();
+            for (Challenge c: challengesWon) {
+                Calendar cal = Calendar. getInstance();
+                cal.setTime(c.getCompleted());
+                dayDiffs.add((int) Math.abs(ChronoUnit.DAYS.between(currentDay.toInstant(), cal.toInstant())));
+            }
+
+            int streak = 0;
+            if (dayDiffs.get(0) == 1) {
+                streak++;
+            }
+            for (int i = 0; i < dayDiffs.size(); i++) {
+
+                if (i > 0 && dayDiffs.get(i) != dayDiffs.get(i - 1) && streak + 1 == dayDiffs.get(i)) {
+                    streak++;
+                }
+                Log.e(TAG, "index: " + i + ", value: " + dayDiffs.get(i));
+            }
+            if (dayDiffs.get(0) == 0) {     // User has completed a challenge today, if not they still can
+                streak++;
+            }
+            Log.e(TAG, "Streak: " + streak);
+        });
     }
 }

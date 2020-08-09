@@ -91,6 +91,25 @@
         tools:text="category" />
 
     <TextView
+        android:id="@+id/tvStreakLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTopLabel"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Current Streak: "
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvStreak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTopLabel"
+        android:layout_toEndOf="@id/tvStreakLabel"
+        android:layout_marginTop="8dp"
+        tools:text="number" />
+
+    <TextView
         android:id="@+id/tvRvLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,7 +117,7 @@
         android:layout_marginTop="8dp"
         android:text="Recently Completed Challenges"
         android:textStyle="bold"
-        android:layout_below="@+id/tvTopLabel" />
+        android:layout_below="@+id/tvStreakLabel" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProfileChallenges"
