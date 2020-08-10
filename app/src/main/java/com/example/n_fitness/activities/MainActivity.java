@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setTitle("Activley");
+
     }
 
     public void loadFragment(int id, Fragment fragment) {
