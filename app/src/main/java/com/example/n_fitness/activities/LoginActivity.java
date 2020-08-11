@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.n_fitness.R;
+import com.google.android.material.textfield.TextInputLayout;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -34,15 +35,15 @@ public class LoginActivity extends AppCompatActivity {
             goMainActivity();
         }
 
-        EditText etUsername = findViewById(R.id.etUsername);
-        EditText etPassword = findViewById(R.id.etPassword);
+        TextInputLayout tiUsername = findViewById(R.id.tiUsername);
+        TextInputLayout tiPassword = findViewById(R.id.tiPassword);
         Button btnLogin = findViewById(R.id.btnLogin);
         Button btnSignUp = findViewById(R.id.btnSignUp);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = etUsername.getText().toString();
-                String password = etPassword.getText().toString();
+                String username = tiUsername.getEditText().getText().toString();
+                String password = tiPassword.getEditText().getText().toString();
                 loginUser(username, password);
             }
         });
@@ -50,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = etUsername.getText().toString();
-                String password = etPassword.getText().toString();
+                String username = tiUsername.getEditText().getText().toString();
+                String password = tiPassword.getEditText().getText().toString();
                 signUpUser(username, password);
             }
         });

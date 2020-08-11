@@ -1,46 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.LoginActivity" >
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background6"
+        android:scaleType="centerCrop" />
 
-    <EditText
-        android:id="@+id/etUsername"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiUsername"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:gravity="start|top"
-        android:layout_marginTop="200dp"
         android:layout_gravity="center"
-        android:hint="username" />
+        android:layout_marginTop="400dp"
+        android:layout_marginLeft="100dp"
+        android:hint="username"
+        app:boxStrokeColor="@color/white_transparency"
+        android:textColorHint="@color/white_transparency"
+        app:hintTextColor="@color/white_transparency"
+        app:counterTextColor="@color/white_transparency"
+        android:outlineSpotShadowColor="@color/white_transparency"
+        android:outlineAmbientShadowColor="@color/white_transparency"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <EditText
-        android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_transparency"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiPassword"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:gravity="start|top"
         android:layout_gravity="center"
+        android:layout_below="@+id/tiUsername"
+        android:layout_marginLeft="100dp"
         android:hint="password"
-        android:inputType="textPassword" />
+        app:boxStrokeColor="@color/white_transparency"
+        android:textColorHint="@color/white_transparency"
+        app:hintTextColor="@color/white_transparency"
+        app:counterTextColor="@color/white_transparency"
+        android:outlineSpotShadowColor="@color/white_transparency"
+        android:outlineAmbientShadowColor="@color/white_transparency"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_transparency"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="300dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
+        android:layout_below="@+id/tiPassword"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="140dp"
         android:text="Login" />
 
     <Button
         android:id="@+id/btnSignUp"
-        android:layout_width="300dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_margin="8dp"
+        android:layout_marginTop="2dp"
         android:layout_gravity="center"
+        android:layout_below="@+id/btnLogin"
+        android:layout_marginLeft="140dp"
+        android:textColor="@color/white_transparency"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:text="Sign Up" />
-</LinearLayout>
+</RelativeLayout>

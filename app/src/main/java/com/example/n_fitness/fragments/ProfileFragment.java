@@ -304,7 +304,7 @@ public class ProfileFragment extends GenericFragment {
 
     private Integer calculateStreak() {
         if (completedChallenges.isEmpty()) {
-            return null;
+            return 0;
         }
 
         ArrayList<Integer> dayDiffs = new ArrayList<>();
