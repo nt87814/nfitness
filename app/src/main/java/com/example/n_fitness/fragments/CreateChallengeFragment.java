@@ -134,10 +134,10 @@ public class CreateChallengeFragment extends DialogFragment {
         challenge.setFrom(ParseUser.getCurrentUser());
         challenge.setRecipient(user);
         challenge.setDeadline(deadline);
+        challenge.setStatus("pending");
         challenge.saveInBackground(new SaveCallback() {
             @Override
-            public void done(ParseException e) {
-            }
+            public void done(ParseException e) {}
         });
     }
 }

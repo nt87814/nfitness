@@ -45,6 +45,7 @@ import com.parse.SaveCallback;
 import com.repsly.library.timelineview.TimelineView;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,8 +53,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_OK;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * Fragment for viewing current user's profile or other user's profile
@@ -309,16 +312,17 @@ public class ProfileFragment extends GenericFragment {
 
         ArrayList<Integer> dayDiffs = new ArrayList<>();
 
-        Calendar currentDay = Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
         for (Challenge c: completedChallenges) {
             Calendar cal = Calendar. getInstance();
             cal.setTime(c.getCompleted());
-            dayDiffs.add((int) Math.abs(ChronoUnit.DAYS.between(currentDay.toInstant(), cal.toInstant())));
+            dayDiffs.add((int) Math.abs(DAYS.between(currentCal.toInstant(), cal.toInstant())));
+
         }
 
         int streak = 0;
-        if (dayDiffs.get(0) == 1) {
-            streak++;
+        if (dayDiffs.get(0) > 1) {
+            return 0;
         }
 
         for (int i = 0; i < dayDiffs.size(); i++) {

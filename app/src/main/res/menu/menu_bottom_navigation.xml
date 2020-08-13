@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_home"
         android:icon="@android:drawable/ic_menu_compass"
-        android:title="My Challenges"
+        android:title="My List"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_explore"
@@ -16,6 +16,12 @@
         android:id="@+id/action_map"
         android:icon="@drawable/ic_baseline_location_on_24"
         android:title="Map"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_notification"
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:title=""
         app:showAsAction="always" />
 
     <item

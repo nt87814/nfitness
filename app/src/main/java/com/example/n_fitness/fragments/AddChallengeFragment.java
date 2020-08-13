@@ -96,6 +96,7 @@ public class AddChallengeFragment extends DialogFragment {
         challenge.setFrom(ParseUser.getCurrentUser());
         challenge.setRecipient(user);
         challenge.setDeadline(deadline);
+        challenge.setStatus("accepted");
         challenge.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

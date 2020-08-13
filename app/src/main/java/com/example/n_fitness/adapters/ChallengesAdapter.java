@@ -188,7 +188,6 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Vi
             Post post = challenge.getPost();
             switch (fragmentScreen) {
                 case HOME:
-//                    tvDeadline.setText(getTimeLeft(challenge.getDeadline().toString()));
                     tvDeadline.setText(getRelativeTimeAgo(challenge.getDeadline().toString()));
                     if (challenge.getFrom().getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                         tvFrom.setText("My challenge");

@@ -24,6 +24,7 @@ public class Challenge extends ParseObject {
     public static final String KEY_LOCATION = "latlng";
     public static final String KEY_DELETED = "deleted";
     public static final String KEY_WON = "won";
+    public static final String KEY_STATUS = "status";
 
     public Post getPost() {
         return (Post) getParseObject(KEY_POST);
@@ -99,4 +100,8 @@ public class Challenge extends ParseObject {
     public Boolean getWon() { return getBoolean(KEY_WON); }
 
     public void setWon(Boolean won) { put(KEY_WON, won); }
+
+    public String getStatus() { return getString(KEY_STATUS); }
+
+    public void setStatus(String status) { put(KEY_STATUS, status); }
 }

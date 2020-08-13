@@ -72,6 +72,9 @@ public class ChallengesFragment extends Fragment {
         query.include(Challenge.KEY_DEADLINE);
         query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
         query.whereEqualTo(Challenge.KEY_COMPLETED, null);
+        query.whereEqualTo(Challenge.KEY_STATUS, "accepted");
+//        query.whereNotEqualTo(Challenge.KEY_STATUS, "declined");
+//        query.whereNotEqualTo(Challenge.KEY_STATUS, "pending");
         query.whereNotEqualTo(Challenge.KEY_DELETED, true);
         query.whereGreaterThan(Challenge.KEY_DEADLINE, current);
         query.addAscendingOrder(Challenge.KEY_DEADLINE);

@@ -18,6 +18,7 @@ import com.example.n_fitness.fragments.ComposeFragment;
 import com.example.n_fitness.fragments.DetailsFragment;
 import com.example.n_fitness.fragments.ExploreFragment;
 import com.example.n_fitness.fragments.FriendsFragment;
+import com.example.n_fitness.fragments.NotificationFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     public static FloatingActionButton btnCreate;
+    public static BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         btnCreate = findViewById(R.id.btnCreate);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent i = new Intent(MainActivity.this, MapActivity.class);
                         startActivity(i);
                         return true;
+                    case R.id.action_notification:
+                        fragment = new NotificationFragment();
+                        break;
                     case R.id.action_profile:
                     default:
                         fragment = new ProfileFragment();
@@ -95,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void setBtnCreateVisibility(Fragment fragment) {
-        if (fragment instanceof DetailsFragment || fragment instanceof FriendsFragment || fragment instanceof ComposeFragment) {
+        if (fragment instanceof DetailsFragment || fragment instanceof FriendsFragment || fragment instanceof ComposeFragment || fragment instanceof NotificationFragment) {
             btnCreate.setVisibility(View.GONE);
         } else {
             btnCreate.setVisibility(View.VISIBLE);
