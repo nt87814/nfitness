@@ -46,6 +46,7 @@ import com.repsly.library.timelineview.TimelineView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -196,7 +197,7 @@ public class ProfileFragment extends GenericFragment {
             adapter.clear();
             adapter.addAll(challenges);
             tvTop.setText(getTopCategory(completedChallenges));
-            tvStreak.setText("" + calculateStreak());
+            tvStreak.setText("" + getStreak());
         });
     }
 
@@ -305,39 +306,6 @@ public class ProfileFragment extends GenericFragment {
         }
     }
 
-    private Integer calculateStreak() {
-        if (completedChallenges.isEmpty()) {
-            return 0;
-        }
-
-        ArrayList<Integer> dayDiffs = new ArrayList<>();
-
-        Calendar currentCal = Calendar.getInstance();
-        for (Challenge c: completedChallenges) {
-            Calendar cal = Calendar. getInstance();
-            cal.setTime(c.getCompleted());
-            dayDiffs.add((int) Math.abs(DAYS.between(currentCal.toInstant(), cal.toInstant())));
-
-        }
-
-        int streak = 0;
-        if (dayDiffs.get(0) > 1) {
-            return 0;
-        }
-
-        for (int i = 0; i < dayDiffs.size(); i++) {
-
-            if (i > 0 && dayDiffs.get(i) != dayDiffs.get(i - 1) && streak + 1 == dayDiffs.get(i)) {
-                streak++;
-            }
-        }
-
-        if (dayDiffs.get(0) == 0) {     // User has completed a challenge today, if not they still can
-            streak++;
-        }
-        return streak;
-    }
-
     private void queryPastWeek(ParseUser user) {
         ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
         query.include(Challenge.KEY_REC);
@@ -376,5 +344,42 @@ public class ProfileFragment extends GenericFragment {
 
             tvWon.setText("" + challenges.size());
         });
+    }
+
+    private Integer getStreak() {
+        if (completedChallenges.size() == 0) {
+            return 0;
+        }
+        int streak = 0;
+        Date beginning = new Date();
+        Calendar calDayAfter = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
+        calDayAfter.setTime(completedChallenges.get(0).getCompleted());
+        long diff = calDayAfter.getTimeInMillis() - cal.getTimeInMillis();
+        long diffHours = Math.abs(diff) / (60 * 60 * 1000);
+        if (diffHours > 40) {
+            return 0;
+        }
+
+        for (int i = 0; i < completedChallenges.size() - 1; i++) {
+            cal.setTime(completedChallenges.get(i).getCompleted());
+            calDayAfter.setTime(completedChallenges.get(i + 1).getCompleted());
+            diff = calDayAfter.getTimeInMillis() - cal.getTimeInMillis();
+            diffHours = Math.abs(diff) / (60 * 60 * 1000);
+            if (diffHours < 40) {
+                streak++;
+                beginning = calDayAfter.getTime();
+            }
+
+            else {
+                break;
+            }
+
+        }
+        Calendar currentCal = Calendar.getInstance();
+        Calendar begCal = Calendar.getInstance();
+        begCal.setTime(beginning);
+        streak = (int) Math.abs(DAYS.between(currentCal.toInstant(), begCal.toInstant()));
+        return streak;
     }
 }

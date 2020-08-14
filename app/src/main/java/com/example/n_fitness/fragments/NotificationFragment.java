@@ -1,5 +1,6 @@
 package com.example.n_fitness.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import com.example.n_fitness.R;
@@ -41,6 +43,7 @@ public class NotificationFragment extends Fragment {
     private static final String TAG = "NotificationFragment";
     private NotificationsAdapter adapter;
     protected List<Challenge> notifications;
+    private BadgeDrawable badge;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -60,7 +63,8 @@ public class NotificationFragment extends Fragment {
         RecyclerView rvNotifications = view.findViewById(R.id.rvNotifications);
 
         notifications = new ArrayList<>();
-        adapter = new NotificationsAdapter(getContext(), notifications);
+        badge = bottomNavigationView.getOrCreateBadge(R.id.action_notification);
+        adapter = new NotificationsAdapter(getContext(), notifications, badge);
         rvNotifications.setAdapter(adapter);
         rvNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNotifications.addItemDecoration(new DividerItemDecoration(rvNotifications.getContext(), DividerItemDecoration.VERTICAL));
@@ -83,18 +87,23 @@ public class NotificationFragment extends Fragment {
             @Override
             public void done(List<Challenge> challenges, ParseException e) {
                 if (e != null) {
-                    Toast.makeText(getContext(), "Issue with getting challenges", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Issue with getting notifications", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 notifications.addAll(challenges);
                 adapter.notifyDataSetChanged();
-
-                if (challenges.size() > 0) {
-                    BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.action_notification);
-                    badge.setVisible(true);
-                    badge.setNumber(challenges.size());
-                }
+                notificationChanged(notifications, badge);
             }
         });
+    }
+
+    public static void notificationChanged(List<Challenge> notifications, BadgeDrawable badge) {
+        if (notifications.size() == 0) {
+            badge.setVisible(false);
+        }
+
+        else {
+            badge.setNumber(notifications.size());
+        }
     }
 }

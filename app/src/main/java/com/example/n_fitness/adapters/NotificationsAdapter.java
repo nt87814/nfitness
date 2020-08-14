@@ -20,20 +20,24 @@ import com.example.n_fitness.activities.MainActivity;
 import com.example.n_fitness.fragments.GenericFragment;
 import com.example.n_fitness.models.Challenge;
 import com.example.n_fitness.models.Post;
+import com.google.android.material.badge.BadgeDrawable;
 import com.parse.ParseUser;
 
 import java.util.List;
 
 import static com.example.n_fitness.adapters.ChallengesAdapter.getRelativeTimeAgo;
+import static com.example.n_fitness.fragments.NotificationFragment.notificationChanged;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
 
     private Context context;
     private List<Challenge> notifications;
+    private BadgeDrawable badge;
 
-    public NotificationsAdapter(Context context, List<Challenge> notifications) {
+    public NotificationsAdapter(Context context, List<Challenge> notifications, BadgeDrawable badge) {
         this.context = context;
         this.notifications = notifications;
+        this.badge = badge;
     }
 
     @NonNull
@@ -60,8 +64,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         private TextView tvDescription;
         private TextView tvFrom;
         private ImageView ivProfile;
-        private Button btnDecline;
-        private Button btnAccept;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -71,8 +73,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvFrom = itemView.findViewById(R.id.tvFrom);
             ivProfile = itemView.findViewById(R.id.ivProfileImage);
-            btnDecline = itemView.findViewById(R.id.btnDecline);
-            btnAccept = itemView.findViewById(R.id.btnAccept);
+            Button btnDecline = itemView.findViewById(R.id.btnDecline);
+            Button btnAccept = itemView.findViewById(R.id.btnAccept);
 
             tvFrom.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,6 +102,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                         challenge.saveInBackground();
                         notifications.remove(position);
                         notifyItemRemoved(position);
+                        notificationChanged(notifications, badge);
                     }
                 }
             });
@@ -114,6 +117,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                         challenge.saveInBackground();
                         notifications.remove(position);
                         notifyItemRemoved(position);
+                        badge.setNumber(notifications.size());
+                        notificationChanged(notifications, badge);
                     }
                 }
             });

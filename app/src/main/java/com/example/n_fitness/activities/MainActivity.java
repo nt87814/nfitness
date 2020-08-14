@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,8 +21,18 @@ import com.example.n_fitness.fragments.ExploreFragment;
 import com.example.n_fitness.fragments.FriendsFragment;
 import com.example.n_fitness.fragments.NotificationFragment;
 import com.example.n_fitness.fragments.ProfileFragment;
+import com.example.n_fitness.models.Challenge;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
+
+import static com.example.n_fitness.fragments.NotificationFragment.notificationChanged;
 
 /**
  * Activity for bottom navigation view
@@ -88,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        queryNotifications();
     }
 
     public void loadFragment(int id, Fragment fragment) {
@@ -105,5 +116,31 @@ public class MainActivity extends AppCompatActivity {
         } else {
             btnCreate.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void queryNotifications() {
+        ParseQuery<Challenge> query = ParseQuery.getQuery(Challenge.class);
+        query.include(Challenge.KEY_FROM);
+        query.include(Challenge.KEY_REC);
+        query.include(Challenge.KEY_POST);
+        query.include(Challenge.KEY_DEADLINE);
+        query.whereEqualTo(Challenge.KEY_REC, ParseUser.getCurrentUser());
+        query.whereEqualTo(Challenge.KEY_COMPLETED, null);
+        query.whereNotEqualTo(Challenge.KEY_DELETED, true);
+        query.whereEqualTo(Challenge.KEY_STATUS, "pending");
+        query.addAscendingOrder(Challenge.KEY_DEADLINE);
+
+        query.findInBackground(new FindCallback<Challenge>() {
+            @Override
+            public void done(List<Challenge> challenges, ParseException e) {
+                if (e != null) {
+                    Toast.makeText(getApplicationContext(), "Issue with getting notifications", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.action_notification);
+                notificationChanged(challenges, badge);
+            }
+        });
     }
 }
