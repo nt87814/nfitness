@@ -202,6 +202,9 @@ public class DetailsFragment extends GenericFragment {
     }
 
     private void likePost() {
+        if (post.getLikes() != null && listHasUserLike(post.getLikes(), ParseUser.getCurrentUser())) {
+            return;
+        }
         post.addLike(ParseUser.getCurrentUser());
         post.saveInBackground();
         setTvLikes();
